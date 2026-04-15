@@ -1,1 +1,9 @@
-<p>navbar works!</p>
+<header class="navbar">
+    <nav>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/sdg-info" routerLinkActive="active">SDG Info</a>
+      <a routerLink="/feedback" routerLinkActive="active">Feedback</a>
+    </nav>
+    <button>Login</button>
+  </header>

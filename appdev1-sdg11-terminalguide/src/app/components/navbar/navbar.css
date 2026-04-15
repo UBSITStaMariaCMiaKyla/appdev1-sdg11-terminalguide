@@ -1,0 +1,35 @@
+/* navbar.css */
+header.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #008080; /* Teal SDG theme */
+}
+
+header.navbar nav {
+  display: flex;
+  gap: 1rem;
+}
+
+header.navbar nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header.navbar nav a.active {
+  text-decoration: underline;
+}
+
+header.navbar button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #006666;
+  color: #fff;
+  cursor: pointer;
+}
+
+header.navbar button:hover {
+  background-color: #004d4d;
+}

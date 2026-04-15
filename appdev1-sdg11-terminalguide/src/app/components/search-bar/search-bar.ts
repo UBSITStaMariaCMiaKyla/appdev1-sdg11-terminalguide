@@ -1,9 +1,17 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search-bar',
-  imports: [],
+  standalone: true,
+  imports: [FormsModule],
   templateUrl: './search-bar.html',
-  styleUrl: './search-bar.scss',
+  styleUrls: ['./search-bar.css']
 })
-export class SearchBar {}
+export class SearchBar {
+  searchTerm: string = '';
+
+  onSearch() {
+    console.log('Searching for:', this.searchTerm);
+  }
+}

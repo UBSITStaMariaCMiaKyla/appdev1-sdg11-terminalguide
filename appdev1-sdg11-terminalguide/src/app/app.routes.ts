@@ -1,12 +1,17 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
+import { Home } from './pages/home/home';
+import { Dashboard } from './pages/dashboard/dashboard';
+import { TerminalDetail } from './pages/terminal-detail/terminal-detail';
+import { SdgInfo } from './pages/sdg-info/sdg-info';
+import { Feedback } from './pages/feedback/feedback';
+import { NotFound } from './pages/not-found/not-found';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'terminal/:id', component: TerminalDetailComponent },
-  { path: 'sdg-info', component: SdgInfoComponent },   // guard added in CI2
-  { path: 'feedback', component: FeedbackComponent },  // guard added in CI4
-  { path: 'not-found', component: NotFoundComponent },
+  { path: '', component: Home },
+  { path: 'dashboard', component: Dashboard },
+  { path: 'terminal/:id', component: TerminalDetail },
+  { path: 'sdg-info', component: SdgInfo },
+  { path: 'feedback', component: Feedback },
+  { path: 'not-found', component: NotFound },
   { path: '**', redirectTo: 'not-found' },
 ];

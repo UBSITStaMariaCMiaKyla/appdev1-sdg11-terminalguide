@@ -1,1 +1,37 @@
-<p>terminal-detail works!</p>
+@if (notFound) {
+  <div class="detail-error">
+    <p>Terminal hub not found.</p>
+    <button (click)="goBack()">← Back to Dashboard</button>
+  </div>
+} @else if (hub) {
+  <div class="detail-page">
+    <div class="detail-header" [style.border-color]="hub.color">
+      <button class="back-btn" (click)="goBack()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M5 12l7 7M5 12l7-7"/>
+        </svg>
+        Back
+      </button>
+      <div class="hub-title">
+        <div class="hub-dot" [style.background]="hub.color"></div>
+        <h1>{{ hub.name }}</h1>
+      </div>
+      <span class="hub-badge" [style.background]="hub.color + '22'" [style.color]="hub.color">
+        {{ hub.terminals.length }} terminals
+      </span>
+    </div>
+
+    <div class="terminal-grid">
+      @for (terminal of hub.terminals; track terminal.no) {
+        <div class="terminal-card">
+          <span class="terminal-no"
+            [style.background]="hub.color + '22'"
+            [style.color]="hub.color">
+            {{ terminal.no }}
+          </span>
+          <span class="terminal-name">{{ terminal.name }}</span>
+        </div>
+      }
+    </div>
+  </div>
+}

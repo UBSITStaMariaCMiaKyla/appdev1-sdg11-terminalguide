@@ -11,8 +11,8 @@ export class TerminalService {
       name: 'Session–Harrison',
       color: '#1D9E75',
       // Along Session Road / Harrison Road intersection area
-      lat: 16.4108,
-      lng: 120.5921,
+      lat: 16.4121,
+      lng: 120.5968,
       terminals: [
         { no: 1, name: 'Aurora Hill Jeepney Stop' },
         { no: 2, name: 'Camp 8' },
@@ -34,10 +34,10 @@ export class TerminalService {
     {
       id: 'igorot-park',
       name: 'Igorot Park',
-      color: '#E67E22',
+      color: '#ebeb09',
       // Igorot Garden / Burnham Park area, near Lake Drive & Perfecto St
-      lat: 16.4124,
-      lng: 120.5971,
+      lat: 16.41294,
+      lng: 120.5948,
       terminals: [
         { no: 1, name: 'Campo Sioco' },
         { no: 2, name: 'Scout Barrio' },
@@ -62,7 +62,7 @@ export class TerminalService {
       color: '#9B59B6',
       // Along Kisad Rd beside Burnham Park, near Otek St
       lat: 16.4130,
-      lng: 120.5955,
+      lng: 120.5925,
       terminals: [
         { no: 1, name: 'Bengao' },
         { no: 2, name: 'La Trinidad – Upper Tomay' },

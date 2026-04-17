@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-terminal-card',
   imports: [],
   templateUrl: './terminal-card.html',
-  styleUrl: './terminal-card.scss',
+  styleUrl: './terminal-card.css',
 })
 export class TerminalCard {}

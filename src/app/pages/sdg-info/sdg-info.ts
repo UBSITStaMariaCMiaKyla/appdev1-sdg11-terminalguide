@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-sdg-info',
   imports: [],
   templateUrl: './sdg-info.html',
-  styleUrl: './sdg-info.scss',
+  styleUrl: './sdg-info.css',
 })
 export class SdgInfo {}

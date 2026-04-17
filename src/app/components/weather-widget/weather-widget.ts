@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-weather-widget',
   imports: [],
   templateUrl: './weather-widget.html',
-  styleUrl: './weather-widget.scss',
+  styleUrl: './weather-widget.css',
 })
 export class WeatherWidget {}

@@ -1,0 +1,22 @@
+<div class="search-wrapper">
+  <div class="search-container">
+    <span class="search-icon">🔍</span>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Search terminals, routes, or destinations..."
+      (keyup.enter)="onSearch()"
+    />
+    <button (click)="onSearch()">Search</button>
+  </div>
+  <div class="search-tags">
+    <span>Quick search:</span>
+    <button class="tag" (click)="quickSearch('Session-Harrison')">Session-Harrison</button>
+    <button class="tag" (click)="quickSearch('Igorot Park')">Igorot Park</button>
+    <button class="tag" (click)="quickSearch('Rizal Park')">Rizal Park</button>
+    <button class="tag" (click)="quickSearch('Baguio Public Market')">Public Market</button>
+    <button class="tag" (click)="quickSearch('Malcolm Square')">Malcolm Square</button>
+    <button class="tag" (click)="quickSearch('Center Mall')">Center Mall</button>
+    <button class="tag" (click)="quickSearch('Magsaysay Ave')">Magsaysay Ave</button>
+  </div>
+</div>

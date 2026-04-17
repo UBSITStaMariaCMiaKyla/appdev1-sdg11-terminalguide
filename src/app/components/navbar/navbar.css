@@ -1,0 +1,71 @@
+/* navbar.css */
+header.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 2rem;
+  background-color: #008080;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+}
+
+.navbar-title {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-links a {
+  color: #e0f7f7;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.navbar-links a:hover {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+.navbar-links a.active {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  font-weight: 700;
+}
+
+.navbar-login-btn {
+  padding: 0.45rem 1.2rem;
+  border: 2px solid #fff;
+  background-color: transparent;
+  color: #fff;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.navbar-login-btn:hover {
+  background-color: #fff;
+  color: #008080;
+}

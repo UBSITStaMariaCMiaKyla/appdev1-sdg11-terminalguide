@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-terminal-detail',
   imports: [],
   templateUrl: './terminal-detail.html',
-  styleUrl: './terminal-detail.scss',
+  styleUrl: './terminal-detail.css',
 })
 export class TerminalDetail {}

@@ -9,7 +9,7 @@ export class TerminalService {
     {
       id: 'session-harrison',
       name: 'Session–Harrison',
-      color: '#1D9E75',
+      color: '#d70400',
       lat: 16.4121,
       lng: 120.5968,
       terminals: [
@@ -33,7 +33,7 @@ export class TerminalService {
     {
       id: 'igorot-park',
       name: 'Igorot Park',
-      color: '#ebeb09',
+      color: '#f09800',
       lat: 16.41294,
       lng: 120.5948,
       terminals: [
@@ -57,7 +57,7 @@ export class TerminalService {
     {
       id: 'rizal-park',
       name: 'Rizal Park',
-      color: '#9B59B6',
+      color: '#eded05',
       lat: 16.4130,
       lng: 120.5925,
       terminals: [
@@ -75,7 +75,7 @@ export class TerminalService {
     {
       id: 'public-market',
       name: 'Baguio Public Market',
-      color: '#E74C3C',
+      color: '#6AA42D',
       lat: 16.4146,
       lng: 120.5947,
       terminals: [
@@ -97,7 +97,7 @@ export class TerminalService {
     {
       id: 'malcolm-square',
       name: 'Malcolm Square',
-      color: '#3498DB',
+      color: '#2680bd',
       lat: 16.4141,
       lng: 120.5957,
       terminals: [
@@ -108,7 +108,7 @@ export class TerminalService {
     {
       id: 'center-mall',
       name: 'Center Mall',
-      color: '#F39C12',
+      color: '#5A51A4',
       lat: 16.4155,
       lng: 120.5946,
       terminals: [
@@ -132,7 +132,7 @@ export class TerminalService {
     {
       id: 'magsaysay',
       name: 'Magsaysay Ave.',
-      color: '#1ABC9C',
+      color: '#C37493',
       lat: 16.4165,
       lng: 120.5935,
       terminals: [

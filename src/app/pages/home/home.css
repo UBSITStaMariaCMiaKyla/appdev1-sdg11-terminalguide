@@ -182,3 +182,40 @@ h1 {
   line-height: 1.7;
   color: rgba(13, 31, 26, 0.6);
 }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .hero {
+    padding: 5rem 1.5rem 3rem;
+    min-height: 100svh;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .terminal-hubs {
+    margin-top: 2.5rem;
+  }
+
+  .feature-card {
+    padding: 2.5rem 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .feature-card:last-child {
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero {
+    padding: 4rem 1.25rem 2.5rem;
+  }
+
+  .cta-btn {
+    padding: 12px 22px;
+    font-size: 0.9rem;
+  }
+}

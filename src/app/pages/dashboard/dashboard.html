@@ -2,11 +2,17 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <h2>Terminal Hubs</h2>
-      <p>Select a hub to view its jeepney routes</p>
+      <p>{{ searchQuery ? 'Results for "' + searchQuery + '"' : 'Select a hub to view its jeepney routes' }}</p>
     </div>
 
     <div class="hub-list">
-      @for (hub of terminalHubs; track hub.id) {
+      @if (filteredHubs.length === 0) {
+        <div class="no-results">
+          <span>No terminals found for "{{ searchQuery }}"</span>
+        </div>
+      }
+
+      @for (hub of filteredHubs; track hub.id) {
         <div
           class="hub-item"
           [class.active]="selectedHub?.id === hub.id"
@@ -25,7 +31,7 @@
         @if (selectedHub?.id === hub.id) {
           <div class="terminal-dropdown">
             @for (terminal of hub.terminals; track terminal.no) {
-              <div class="terminal-item">
+              <div class="terminal-item clickable" (click)="selectTerminal(terminal)">
                 <span class="terminal-no"
                   [style.background]="hub.color + '22'"
                   [style.color]="hub.color">

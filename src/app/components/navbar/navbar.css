@@ -13,7 +13,6 @@ header.navbar {
   z-index: 1000;
 }
 
-/* BRAND - left */
 .navbar-brand {
   justify-self: start;
 }
@@ -21,26 +20,20 @@ header.navbar {
 .navbar-title-group {
   display: flex;
   align-items: center;
-  /* Slight negative gap so "Baguio" image and "Jeepney Guide" feel like one word */
   gap: 0.8rem;
 }
 
-/* The Baguio forest-letter image */
 .baguio-img {
-  /* Height matches the cap-height of the text next to it */
   height: 36px;
   width: auto;
   object-fit: contain;
   display: block;
-  /* Nudge down slightly so it sits on the same baseline as the text */
   margin-top: 2px;
 }
 
-/* "Jeepney Guide" text — same visual weight as the Baguio image height */
 .navbar-title-rest {
   font-family: 'Syne', sans-serif;
   font-weight: 700;
-  /* Font size tuned so cap-height ≈ 36px  */
   font-size: 1.70rem;
   color: #0d1f1a;
   letter-spacing: -0.02em;
@@ -48,7 +41,6 @@ header.navbar {
   line-height: 1;
 }
 
-/* NAV LINKS - center */
 .navbar-links {
   display: flex;
   gap: 2rem;
@@ -77,7 +69,6 @@ header.navbar {
   font-weight: 500;
 }
 
-/* LOGIN BUTTON - right */
 .navbar-login-btn {
   justify-self: end;
   padding: 0.45rem 1.2rem;
@@ -96,4 +87,105 @@ header.navbar {
 .navbar-login-btn:hover {
   background-color: #1D9E75;
   color: #fff;
+}
+
+/* HAMBURGER - hidden on desktop */
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  justify-self: end;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.navbar-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #0d1f1a;
+  border-radius: 2px;
+  transition: all 0.2s;
+}
+
+/* MOBILE MENU */
+.navbar-mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem 1.5rem;
+  gap: 1rem;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.navbar-mobile-menu.open {
+  display: flex;
+}
+
+.navbar-mobile-menu a {
+  color: #6b7280;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.navbar-mobile-menu a.active {
+  color: #1D9E75;
+  font-weight: 500;
+}
+
+.navbar-mobile-menu .navbar-login-btn {
+  justify-self: unset;
+  width: fit-content;
+}
+
+/* TABLET */
+@media (max-width: 768px) {
+  header.navbar {
+    grid-template-columns: 1fr auto;
+    padding: 0.65rem 1.25rem;
+    position: relative;
+  }
+
+  .navbar-links {
+    display: none;
+  }
+
+  .navbar-login-btn {
+    display: none;
+  }
+
+  .navbar-hamburger {
+    display: flex;
+  }
+
+  .baguio-img {
+    height: 28px;
+  }
+
+  .navbar-title-rest {
+    font-size: 1.3rem;
+  }
+}
+
+/* SMALL MOBILE */
+@media (max-width: 400px) {
+  .navbar-title-rest {
+    font-size: 1.1rem;
+  }
+
+  .baguio-img {
+    height: 22px;
+  }
 }

@@ -13,4 +13,20 @@
     <a routerLink="/feedback" routerLinkActive="active">Feedback</a>
   </nav>
   <button class="navbar-login-btn">Login</button>
+
+   <button class="navbar-hamburger" (click)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="navbar-mobile-menu" [class.open]="menuOpen">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Home</a>
+    <a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
+    <a routerLink="/sdg-info" routerLinkActive="active" (click)="closeMenu()">SDG Info</a>
+    <a routerLink="/feedback" routerLinkActive="active" (click)="closeMenu()">Feedback</a>
+    <button class="navbar-login-btn">Login</button>
+  </div>
+
+  
 </header>

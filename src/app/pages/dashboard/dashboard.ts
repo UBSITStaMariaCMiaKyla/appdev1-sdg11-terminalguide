@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { TerminalService } from '../../services/terminal';
-import { TerminalHub } from '../../models/terminal.model';
+import { TerminalHub, Terminal } from '../../models/terminal.model';
 
 declare const L: any;
 
@@ -15,23 +16,65 @@ declare const L: any;
 export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   selectedHub: TerminalHub | null = null;
   terminalHubs: TerminalHub[] = [];
+  filteredHubs: TerminalHub[] = [];
+  searchQuery: string = '';
   private map: any;
   private hubMarkers: any[] = [];
   private terminalMarkers: any[] = [];
+  private mapReady = false;
 
-  constructor(private terminalService: TerminalService) {}
+  constructor(
+    private terminalService: TerminalService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.terminalHubs = this.terminalService.getHubs();
+    this.filteredHubs = this.terminalHubs;
+
+    this.route.queryParams.subscribe(params => {
+      const search = params['search'] || '';
+      this.searchQuery = search;
+      this.applySearch(search);
+    });
   }
 
   ngAfterViewInit(): void {
     this.initMap();
+    this.mapReady = true;
   }
 
   ngOnDestroy(): void {
     if (this.map) {
       this.map.remove();
+    }
+  }
+
+  private normalize(s: string): string {
+    return s.toLowerCase().replace(/[-–—]/g, '-');
+  }
+
+  private applySearch(query: string): void {
+    if (!query.trim()) {
+      this.filteredHubs = this.terminalHubs;
+      this.selectedHub = null;
+      this.clearTerminalMarkers();
+      return;
+    }
+
+    const q = this.normalize(query);
+
+    this.filteredHubs = this.terminalHubs.filter(hub =>
+      this.normalize(hub.name).includes(q) ||
+      hub.terminals.some(t => this.normalize(t.name).includes(q))
+    );
+
+    const exactHub = this.filteredHubs.find(h =>
+      this.normalize(h.name).includes(q)
+    );
+
+    if (exactHub && this.mapReady) {
+      setTimeout(() => this.selectHub(exactHub), 100);
     }
   }
 
@@ -49,6 +92,10 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     }).addTo(this.map);
 
     this.addHubMarkers();
+
+    if (this.searchQuery) {
+      setTimeout(() => this.applySearch(this.searchQuery), 200);
+    }
   }
 
   private addHubMarkers(): void {
@@ -134,15 +181,15 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
           direction: 'top',
         })
         .on('click', () => {
-          this.map.panTo([lat, lng]);
+          this.map.setView([lat, lng], 18);
         });
 
-      this.terminalMarkers.push(marker);
+      this.terminalMarkers.push({ marker, lat, lng });
     });
   }
 
   private clearTerminalMarkers(): void {
-    this.terminalMarkers.forEach(m => m.remove());
+    this.terminalMarkers.forEach(m => m.marker.remove());
     this.terminalMarkers = [];
   }
 
@@ -151,15 +198,28 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       this.selectedHub = null;
       this.clearTerminalMarkers();
     } else {
-      const wasZoomed = this.map.getZoom() >= 16;
       this.selectedHub = hub;
-      if (!wasZoomed) {
-        this.map.setView([hub.lat, hub.lng], 16);
-      } else {
-        this.map.panTo([hub.lat, hub.lng]);
-      }
+      this.map.setView([hub.lat, hub.lng], 19);
       this.addTerminalMarkers(hub);
     }
+  }
+
+  selectTerminal(terminal: Terminal): void {
+    if (!this.selectedHub) return;
+
+    let lat: number;
+    let lng: number;
+
+    if (terminal.lat && terminal.lng) {
+      lat = terminal.lat;
+      lng = terminal.lng;
+    } else {
+      // Fall back to hub location if no individual coords
+      lat = this.selectedHub.lat;
+      lng = this.selectedHub.lng;
+    }
+
+    this.map.setView([lat, lng], 20);
   }
 
   closePanel(): void {

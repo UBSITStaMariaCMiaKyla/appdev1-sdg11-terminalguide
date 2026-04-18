@@ -16,7 +16,8 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   selectedHub: TerminalHub | null = null;
   terminalHubs: TerminalHub[] = [];
   private map: any;
-  private markers: any[] = [];
+  private hubMarkers: any[] = [];
+  private terminalMarkers: any[] = [];
 
   constructor(private terminalService: TerminalService) {}
 
@@ -41,18 +42,18 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       zoomControl: true,
     });
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: 'abcd',
       maxZoom: 20,
     }).addTo(this.map);
 
-    this.addMarkers();
+    this.addHubMarkers();
   }
 
-  private addMarkers(): void {
-    this.markers.forEach(m => m.remove());
-    this.markers = [];
+  private addHubMarkers(): void {
+    this.hubMarkers.forEach(m => m.remove());
+    this.hubMarkers = [];
 
     this.terminalHubs.forEach(hub => {
       const markerHtml = `
@@ -78,16 +79,83 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
         .bindTooltip(hub.name, { permanent: false, direction: 'top' })
         .on('click', () => this.selectHub(hub));
 
-      this.markers.push(marker);
+      this.hubMarkers.push(marker);
     });
   }
 
+  private addTerminalMarkers(hub: TerminalHub): void {
+    this.clearTerminalMarkers();
+
+    const total = hub.terminals.length;
+    const radius = 0.0008;
+
+    hub.terminals.forEach((terminal, index) => {
+      let lat: number;
+      let lng: number;
+
+      if (terminal.lat && terminal.lng) {
+        lat = terminal.lat;
+        lng = terminal.lng;
+      } else {
+        const angle = (2 * Math.PI * index) / total - Math.PI / 2;
+        lat = hub.lat + radius * Math.cos(angle);
+        lng = hub.lng + radius * Math.sin(angle) * 1.5;
+      }
+
+      const markerHtml = `
+        <div style="
+          background: ${hub.color};
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          border: 2px solid white;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 10px;
+          font-weight: 700;
+          color: white;
+          cursor: pointer;
+          font-family: Inter, sans-serif;
+        ">${terminal.no}</div>`;
+
+      const icon = L.divIcon({
+        html: markerHtml,
+        className: '',
+        iconSize: [26, 26],
+        iconAnchor: [13, 13],
+      });
+
+      const marker = L.marker([lat, lng], { icon })
+        .addTo(this.map)
+        .bindTooltip(`${terminal.no}. ${terminal.name}`, {
+          permanent: false,
+          direction: 'top',
+        });
+
+      this.terminalMarkers.push(marker);
+    });
+  }
+
+  private clearTerminalMarkers(): void {
+    this.terminalMarkers.forEach(m => m.remove());
+    this.terminalMarkers = [];
+  }
+
   selectHub(hub: TerminalHub): void {
-    this.selectedHub = hub;
-    this.map.setView([hub.lat, hub.lng], 16);
+    if (this.selectedHub?.id === hub.id) {
+      this.selectedHub = null;
+      this.clearTerminalMarkers();
+    } else {
+      this.selectedHub = hub;
+      this.map.setView([hub.lat, hub.lng], 16);
+      this.addTerminalMarkers(hub);
+    }
   }
 
   closePanel(): void {
     this.selectedHub = null;
+    this.clearTerminalMarkers();
   }
 }

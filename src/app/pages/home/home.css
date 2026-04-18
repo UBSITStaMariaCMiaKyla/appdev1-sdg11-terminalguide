@@ -12,7 +12,7 @@
 
 .hero {
   min-height: 100vh;
-  background: #0d1f1a;
+  background: linear-gradient(135deg,#117161 0%, #86C1B7 0%, #E0EDF5 40%, #AED4EA 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -29,7 +29,7 @@
   font-family: 'Syne', sans-serif;
   font-weight: 800;
   font-size: clamp(100px, 22vw, 280px);
-  color: rgba(29, 158, 117, 0.06);
+  color: rgba(29, 158, 117, 0.08);
   letter-spacing: -0.04em;
   user-select: none;
   pointer-events: none;
@@ -49,11 +49,12 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #1D9E75;
-  border: 1px solid rgba(29, 158, 117, 0.4);
+  color: #0f7a5a;
+  border: 1px solid rgba(15, 122, 90, 0.35);
   border-radius: 20px;
   padding: 6px 14px;
   margin-bottom: 2rem;
+  background: rgba(255,255,255,0.4);
 }
 
 h1 {
@@ -61,7 +62,7 @@ h1 {
   font-weight: 800;
   font-size: clamp(3rem, 7vw, 5.5rem);
   line-height: 1.05;
-  color: #e8f0ec;
+  color: #0d2e22;
   letter-spacing: -0.03em;
   margin-bottom: 1.5rem;
 }
@@ -75,7 +76,7 @@ h1 {
   font-size: 1.1rem;
   font-weight: 300;
   line-height: 1.75;
-  color: rgba(232, 240, 236, 0.6);
+  color: rgba(13, 46, 34, 0.65);
   max-width: 520px;
   margin-bottom: 2.5rem;
 }
@@ -87,16 +88,17 @@ h1 {
   font-family: 'DM Sans', sans-serif;
   font-size: 1rem;
   font-weight: 500;
-  color: #0d1f1a;
+  color: #fff;
   background: #1D9E75;
   border-radius: 50px;
   padding: 14px 28px;
   text-decoration: none;
   transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 4px 15px rgba(29, 158, 117, 0.3);
 }
 
 .cta-btn:hover {
-  background: #5DCAA5;
+  background: #178a65;
   transform: translateY(-2px);
 }
 
@@ -111,7 +113,7 @@ h1 {
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(232, 240, 236, 0.35);
+  color: rgba(13, 46, 34, 0.4);
   margin-bottom: 0.75rem;
 }
 
@@ -124,21 +126,22 @@ h1 {
 .hub {
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
-  color: rgba(232, 240, 236, 0.55);
-  border: 1px solid rgba(232, 240, 236, 0.12);
+  color: rgba(9, 28, 21, 0.6);
+  border: 1px solid rgba(6, 23, 17, 0.15);
   border-radius: 20px;
   padding: 6px 14px;
+  background: rgba(255,255,255,0.5);
   transition: border-color 0.2s, color 0.2s;
 }
 
 .hub:hover {
-  border-color: rgba(29, 158, 117, 0.5);
+  border-color: #1D9E75;
   color: #1D9E75;
   cursor: default;
 }
 
 .features {
-  background: #f5f0e8;
+  background: #f7f5f0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 0;

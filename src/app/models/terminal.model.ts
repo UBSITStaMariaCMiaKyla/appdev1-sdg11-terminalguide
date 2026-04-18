@@ -1,6 +1,8 @@
 export interface Terminal {
   no: number;
   name: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface TerminalHub {

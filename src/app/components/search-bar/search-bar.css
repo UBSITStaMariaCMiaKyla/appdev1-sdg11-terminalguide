@@ -1,80 +1,98 @@
-/* search-bar.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
 .search-wrapper {
-  background-color: #f0fafa;
-  padding: 1.25rem 2rem;
-  border-bottom: 1px solid #c0e8e8;
+  background-color: #ffffff;
+  padding: 0.9rem 2.5rem;
+  border-bottom: 1px solid #d7d7d7;
 }
 
 .search-container {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #fff;
-  border: 2px solid #008080;
+  background-color: #ffffff;
+  border: 1.5px solid #e5e7eb;
   border-radius: 30px;
-  padding: 0.4rem 0.75rem;
-  max-width: 700px;
+  padding: 0.45rem 0.75rem;
+  max-width: 680px;
   margin: 0 auto;
-  box-shadow: 0 2px 8px rgba(0, 128, 128, 0.1);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-container:focus-within {
+  border-color: #1D9E75;
+  box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.1);
 }
 
 .search-icon {
   font-size: 1rem;
-  color: #008080;
+  color: #9ca3af;
 }
 
 .search-container input {
   flex: 1;
   border: none;
   outline: none;
-  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
   background: transparent;
-  color: #333;
+  color: #111827;
+}
+
+.search-container input::placeholder {
+  color: #9ca3af;
 }
 
 .search-container button {
   padding: 0.4rem 1.1rem;
   border: none;
-  background-color: #008080;
+  background-color: #1D9E75;
   color: #fff;
   border-radius: 20px;
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
+  font-size: 0.83rem;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .search-container button:hover {
-  background-color: #006666;
+  background-color: #178a65;
 }
 
 .search-tags {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.75rem;
+  margin-top: 0.6rem;
   flex-wrap: wrap;
   justify-content: center;
-  font-size: 0.85rem;
-  color: #555;
 }
 
 .search-tags span {
-  font-weight: 600;
-  color: #008080;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9ca3af;
 }
 
 .tag {
-  padding: 0.25rem 0.75rem;
-  border: 1px solid #008080;
+  padding: 0.2rem 0.7rem;
+  border: 1px solid #e5e7eb;
   background-color: #fff;
-  color: #008080;
+  color: #6b7280;
   border-radius: 15px;
-  font-size: 0.8rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.76rem;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
 }
 
 .tag:hover {
-  background-color: #008080;
-  color: #fff;
+  border-color: #1D9E75;
+  color: #1D9E75;
+  background-color: rgba(29, 158, 117, 0.05);
 }

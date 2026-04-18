@@ -16,38 +16,32 @@
             <span class="hub-name">{{ hub.name }}</span>
             <span class="hub-count">{{ hub.terminals.length }} terminals</span>
           </div>
-          <svg class="hub-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 18l6-6-6-6"/>
+          <svg class="hub-arrow" [class.rotated]="selectedHub?.id === hub.id"
+            width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
           </svg>
         </div>
+
+        @if (selectedHub?.id === hub.id) {
+          <div class="terminal-dropdown">
+            @for (terminal of hub.terminals; track terminal.no) {
+              <div class="terminal-item">
+                <span class="terminal-no"
+                  [style.background]="hub.color + '22'"
+                  [style.color]="hub.color">
+                  {{ terminal.no }}
+                </span>
+                <span class="terminal-name">{{ terminal.name }}</span>
+              </div>
+            }
+          </div>
+        }
       }
     </div>
-
-    @if (selectedHub) {
-      <div class="terminal-panel">
-        <div class="panel-header" [style.border-color]="selectedHub.color">
-          <h3>{{ selectedHub.name }}</h3>
-          <button class="close-btn" (click)="closePanel()">✕</button>
-        </div>
-        <div class="terminal-list">
-          @for (terminal of selectedHub.terminals; track terminal.no) {
-            <div class="terminal-item">
-              <span class="terminal-no"
-                [style.background]="selectedHub.color + '22'"
-                [style.color]="selectedHub.color">
-                {{ terminal.no }}
-              </span>
-              <span class="terminal-name">{{ terminal.name }}</span>
-            </div>
-          }
-        </div>
-      </div>
-    }
   </aside>
 
   <main class="map-container">
     <div id="leaflet-map" style="width:100%;height:100%;"></div>
-
     <div class="map-overlay-title">
       <span>Baguio City</span>
       <small>Jeepney Terminal Guide</small>

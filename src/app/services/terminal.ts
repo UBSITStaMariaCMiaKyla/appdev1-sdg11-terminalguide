@@ -98,11 +98,11 @@ export class TerminalService {
       id: 'malcolm-square',
       name: 'Malcolm Square',
       color: '#3498DB',
-      lat: 16.4130,
-      lng: 120.5950,
+      lat: 16.4141,
+      lng: 120.5957,
       terminals: [
-        { no: 1, name: 'Aurora Hill', lat: 16.4118, lng: 120.5940 },
-        { no: 2, name: 'Trancoville', lat: 16.4118, lng: 120.5940 },
+        { no: 1, name: 'Aurora Hill', lat: 16.41415, lng: 120.59555 },
+        { no: 2, name: 'Trancoville', lat: 16.4143, lng: 120.59558 },
       ],
     },
     {

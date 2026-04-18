@@ -143,16 +143,21 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     this.terminalMarkers = [];
   }
 
-  selectHub(hub: TerminalHub): void {
-    if (this.selectedHub?.id === hub.id) {
-      this.selectedHub = null;
-      this.clearTerminalMarkers();
-    } else {
-      this.selectedHub = hub;
+selectHub(hub: TerminalHub): void {
+  if (this.selectedHub?.id === hub.id) {
+    this.selectedHub = null;
+    this.clearTerminalMarkers();
+  } else {
+    const wasZoomed = this.map.getZoom() >= 16;
+    this.selectedHub = hub;
+    if (!wasZoomed) {
       this.map.setView([hub.lat, hub.lng], 16);
-      this.addTerminalMarkers(hub);
+    } else {
+      this.map.panTo([hub.lat, hub.lng]);
     }
+    this.addTerminalMarkers(hub);
   }
+}
 
   closePanel(): void {
     this.selectedHub = null;

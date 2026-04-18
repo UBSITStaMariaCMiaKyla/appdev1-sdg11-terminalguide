@@ -132,6 +132,9 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
         .bindTooltip(`${terminal.no}. ${terminal.name}`, {
           permanent: false,
           direction: 'top',
+        })
+        .on('click', () => {
+          this.map.panTo([lat, lng]);
         });
 
       this.terminalMarkers.push(marker);
@@ -143,21 +146,21 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     this.terminalMarkers = [];
   }
 
-selectHub(hub: TerminalHub): void {
-  if (this.selectedHub?.id === hub.id) {
-    this.selectedHub = null;
-    this.clearTerminalMarkers();
-  } else {
-    const wasZoomed = this.map.getZoom() >= 16;
-    this.selectedHub = hub;
-    if (!wasZoomed) {
-      this.map.setView([hub.lat, hub.lng], 16);
+  selectHub(hub: TerminalHub): void {
+    if (this.selectedHub?.id === hub.id) {
+      this.selectedHub = null;
+      this.clearTerminalMarkers();
     } else {
-      this.map.panTo([hub.lat, hub.lng]);
+      const wasZoomed = this.map.getZoom() >= 16;
+      this.selectedHub = hub;
+      if (!wasZoomed) {
+        this.map.setView([hub.lat, hub.lng], 16);
+      } else {
+        this.map.panTo([hub.lat, hub.lng]);
+      }
+      this.addTerminalMarkers(hub);
     }
-    this.addTerminalMarkers(hub);
   }
-}
 
   closePanel(): void {
     this.selectedHub = null;

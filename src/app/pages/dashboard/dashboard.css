@@ -104,24 +104,32 @@
 .hub-arrow {
   color: rgba(13, 46, 34, 0.25);
   flex-shrink: 0;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
 }
 
 .hub-arrow.rotated {
   transform: rotate(180deg);
 }
 
+/* TERMINAL DROPDOWN — always in DOM, animates both open and close */
 .terminal-dropdown {
   background: rgba(255, 255, 255, 0.45);
-  border-top: 1px solid rgba(134, 193, 183, 0.2);
-  border-bottom: 1px solid rgba(134, 193, 183, 0.2);
-  animation: slideDown 0.2s ease;
+  border-top: 0px solid rgba(134, 193, 183, 0.2);
+  border-bottom: 0px solid rgba(134, 193, 183, 0.2);
   overflow: hidden;
+  /* Closed state */
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease, border-width 0s 0.3s;
 }
 
-@keyframes slideDown {
-  from { opacity: 0; max-height: 0; }
-  to   { opacity: 1; max-height: 600px; }
+.terminal-dropdown.open {
+  /* Open state — set max-height higher than any possible content */
+  max-height: 700px;
+  opacity: 1;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  transition: max-height 0.3s ease, opacity 0.25s ease, border-width 0s;
 }
 
 .terminal-item {

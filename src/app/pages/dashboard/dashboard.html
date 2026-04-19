@@ -28,20 +28,19 @@
           </svg>
         </div>
 
-        @if (selectedHub?.id === hub.id) {
-          <div class="terminal-dropdown">
-            @for (terminal of hub.terminals; track terminal.no) {
-              <div class="terminal-item clickable" (click)="selectTerminal(terminal)">
-                <span class="terminal-no"
-                  [style.background]="hub.color + '22'"
-                  [style.color]="hub.color">
-                  {{ terminal.no }}
-                </span>
-                <span class="terminal-name">{{ terminal.name }}</span>
-              </div>
-            }
-          </div>
-        }
+        <!-- Always in DOM, toggled by .open class for smooth open AND close animation -->
+        <div class="terminal-dropdown" [class.open]="selectedHub?.id === hub.id">
+          @for (terminal of hub.terminals; track terminal.no) {
+            <div class="terminal-item clickable" (click)="selectTerminal(terminal)">
+              <span class="terminal-no"
+                [style.background]="hub.color + '22'"
+                [style.color]="hub.color">
+                {{ terminal.no }}
+              </span>
+              <span class="terminal-name">{{ terminal.name }}</span>
+            </div>
+          }
+        </div>
       }
     </div>
   </aside>

@@ -16,9 +16,32 @@ export class SearchBar {
   searchTerm: string = '';
   suggestions: { label: string; sublabel: string }[] = [];
   showSuggestions: boolean = false;
-  activeIndex: number = -1;  // -1 means nothing highlighted
+  activeIndex: number = -1;
+
+  private readonly placeholders: string[] = [
+    'Baguio City, ano tara???',
+    'Baguio, where u at??',
+    'para po... saan tayo fr?',
+    'Terminal reveal pls',
+    'Where to, bestie?',
+    'Ate kimmy ate kimmy, saan tayo?',
+    'Lost? I got u',
+    'Goodness gracious, gala nanaman?',
+    'It`s giving, saan ang sakayan',
+    'Where to tayo fr??',
+    'Lowkey need ng jeep',
+    'POV: di mo alam saan sasakay',
+    'Baguio core: saan ang jeep',
+  ];
+
+  placeholder: string = '';
 
   constructor(private router: Router, private terminalService: TerminalService) {
+    // Pick a random placeholder on every load
+    this.placeholder = this.placeholders[
+      Math.floor(Math.random() * this.placeholders.length)
+    ];
+
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
@@ -73,9 +96,8 @@ export class SearchBar {
     } else if (event.key === 'ArrowUp') {
       event.preventDefault();
       this.activeIndex = Math.max(this.activeIndex - 1, -1);
-      // If back to -1, restore original typed text
       if (this.activeIndex === -1) {
-        this.onInput(); // re-filter without changing searchTerm
+        this.onInput();
       }
     } else if (event.key === 'Enter') {
       if (this.activeIndex >= 0) {

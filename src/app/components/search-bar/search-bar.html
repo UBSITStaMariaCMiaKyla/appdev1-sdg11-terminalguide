@@ -8,19 +8,23 @@
         type="text"
         [(ngModel)]="searchTerm"
         placeholder="Search terminals, routes, or destinations..."
-        (keyup.enter)="onSearch()"
         (input)="onInput()"
+        (keydown)="onKeyDown($event)"
         (blur)="hideSuggestions()"
         autocomplete="off"
       />
       <button (click)="onSearch()">Search</button>
     </div>
 
-    <!-- Suggestions dropdown -->
     @if (showSuggestions) {
       <ul class="suggestions-list">
-        @for (s of suggestions; track s.label) {
-          <li class="suggestion-item" (mousedown)="selectSuggestion(s)">
+        @for (s of suggestions; track s.label; let i = $index) {
+          <li
+            class="suggestion-item"
+            [class.active]="i === activeIndex"
+            (mousedown)="selectSuggestion(s)"
+            (mouseover)="activeIndex = i"
+          >
             <span class="suggestion-icon">
               <img src="/assets/jeepney_icon.png" alt="jeepney" width="18" height="15" style="object-fit: contain; opacity: 0.5;">
             </span>

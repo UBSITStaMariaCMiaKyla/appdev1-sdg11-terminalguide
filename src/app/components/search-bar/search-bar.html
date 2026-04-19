@@ -1,16 +1,37 @@
 <div class="search-wrapper">
-  <div class="search-container">
-    <span class="search-icon">
-      <img src="/assets/jeepney_icon.png" alt="jeepney" width="28" height="24" style="object-fit: contain;">
-    </span>
-    <input
-      type="text"
-      [(ngModel)]="searchTerm"
-      placeholder="Search terminals, routes, or destinations..."
-      (keyup.enter)="onSearch()"
-    />
-    <button (click)="onSearch()">Search</button>
+  <div class="search-container-wrap">
+    <div class="search-container">
+      <span class="search-icon">
+        <img src="/assets/jeepney_icon.png" alt="jeepney" width="28" height="24" style="object-fit: contain;">
+      </span>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search terminals, routes, or destinations..."
+        (keyup.enter)="onSearch()"
+        (input)="onInput()"
+        (blur)="hideSuggestions()"
+        autocomplete="off"
+      />
+      <button (click)="onSearch()">Search</button>
+    </div>
+
+    <!-- Suggestions dropdown -->
+    @if (showSuggestions) {
+      <ul class="suggestions-list">
+        @for (s of suggestions; track s.label) {
+          <li class="suggestion-item" (mousedown)="selectSuggestion(s)">
+            <span class="suggestion-icon">
+              <img src="/assets/jeepney_icon.png" alt="jeepney" width="18" height="15" style="object-fit: contain; opacity: 0.5;">
+            </span>
+            <span class="suggestion-label">{{ s.label }}</span>
+            <span class="suggestion-sub">{{ s.sublabel }}</span>
+          </li>
+        }
+      </ul>
+    }
   </div>
+
   <div class="search-tags">
     <span>Quick search:</span>
     <button class="tag" (click)="quickSearch('Session-Harrison')">Session-Harrison</button>

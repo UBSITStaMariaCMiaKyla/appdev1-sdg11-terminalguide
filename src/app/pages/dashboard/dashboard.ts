@@ -69,30 +69,50 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       hub.terminals.some(t => this.normalize(t.name).includes(q))
     );
 
+    // Check if query matches a hub name first
     const exactHub = this.filteredHubs.find(h =>
       this.normalize(h.name).includes(q)
     );
 
     if (exactHub && this.mapReady) {
       setTimeout(() => this.selectHub(exactHub), 100);
+      return;
+    }
+
+    // Otherwise check if query matches a specific terminal inside a hub
+    if (this.mapReady) {
+      for (const hub of this.filteredHubs) {
+        const matchedTerminal = hub.terminals.find(t =>
+          this.normalize(t.name).includes(q)
+        );
+        if (matchedTerminal) {
+          setTimeout(() => {
+            // Open the hub panel and show its terminals
+            this.selectHub(hub);
+            // Then zoom to the specific terminal
+            const lat = matchedTerminal.lat ?? hub.lat;
+            const lng = matchedTerminal.lng ?? hub.lng;
+            setTimeout(() => this.map.setView([lat, lng], 19), 150);
+          }, 100);
+          break;
+        }
+      }
     }
   }
 
   private initMap(): void {
-    // Cordillera Administrative Region bounding box
-    // Covers Baguio + Benguet + surrounding provinces (La Trinidad, Tuba, Sablan, Itogon, etc.)
     const carBounds = L.latLngBounds(
-      L.latLng(15.8, 119.9),  // south-west
-      L.latLng(18.0, 121.6)   // north-east
+      L.latLng(15.8, 119.9),
+      L.latLng(18.0, 121.6)
     );
 
     this.map = L.map('leaflet-map', {
       center: [16.4123, 120.5960],
       zoom: 13,
-      minZoom: 10,             // won't zoom out beyond CAR level
+      minZoom: 10,
       maxZoom: 20,
       maxBounds: carBounds,
-      maxBoundsViscosity: 1.0, // hard stop — can't pan outside CAR
+      maxBoundsViscosity: 1.0,
       zoomControl: true,
     });
 

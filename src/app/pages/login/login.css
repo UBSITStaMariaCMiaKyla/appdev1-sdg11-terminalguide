@@ -28,7 +28,7 @@
   transform: translate(-50%, -50%);
   font-family: 'Syne', sans-serif;
   font-weight: 800;
-  font-size: clamp(100px, 22vw, 260px);
+  font-size: clamp(80px, 18vw, 220px);
   color: rgba(29, 158, 117, 0.06);
   letter-spacing: -0.04em;
   user-select: none;
@@ -36,6 +36,7 @@
   white-space: nowrap;
 }
 
+/* CARD */
 .login-card {
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(12px);
@@ -47,6 +48,11 @@
   position: relative;
   z-index: 1;
   box-shadow: 0 8px 32px rgba(13, 46, 34, 0.1);
+  transition: max-width 0.3s ease;
+}
+
+.login-card.wide {
+  max-width: 640px;
 }
 
 .login-brand {
@@ -67,7 +73,6 @@
 /* TABS */
 .tab-row {
   display: flex;
-  gap: 0;
   background: rgba(15, 122, 90, 0.08);
   border-radius: 10px;
   padding: 4px;
@@ -169,6 +174,10 @@
   cursor: pointer;
   transition: background 0.2s, transform 0.2s;
   box-shadow: 0 4px 15px rgba(29, 158, 117, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .submit-btn:hover {
@@ -193,6 +202,137 @@
   color: #1D9E75;
   cursor: pointer;
   text-decoration: underline;
+}
+
+/* USER TYPE CARDS */
+.user-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.user-type-card {
+  position: relative;
+  background: rgba(255,255,255,0.7);
+  border: 2px solid rgba(15, 122, 90, 0.15);
+  border-radius: 14px;
+  padding: 1.5rem 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.user-type-card:hover {
+  border-color: rgba(29, 158, 117, 0.4);
+  background: rgba(255,255,255,0.9);
+  transform: translateY(-2px);
+}
+
+.user-type-card.selected {
+  border-color: #1D9E75;
+  background: rgba(29, 158, 117, 0.06);
+}
+
+.user-type-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.local-icon {
+  background: rgba(29, 158, 117, 0.12);
+  color: #0F6E56;
+}
+
+.tourist-icon {
+  background: rgba(52, 152, 219, 0.12);
+  color: #1a6fa0;
+}
+
+.user-type-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0d2e22;
+  margin-bottom: 0.4rem;
+}
+
+.user-type-card p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: rgba(13, 46, 34, 0.55);
+}
+
+.selected-check {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #1D9E75;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* STEP 2 HEADER */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(13, 46, 34, 0.5);
+  cursor: pointer;
+  margin-bottom: 1rem;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: #0d2e22;
+}
+
+.step2-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.step2-header h2 {
+  margin-bottom: 0 !important;
+}
+
+.user-type-badge {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+.local-badge {
+  background: rgba(29, 158, 117, 0.12);
+  color: #0F6E56;
+}
+
+.tourist-badge {
+  background: rgba(52, 152, 219, 0.12);
+  color: #1a6fa0;
 }
 
 /* MESSAGES */

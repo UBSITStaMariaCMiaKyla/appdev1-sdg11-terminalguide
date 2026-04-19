@@ -1,19 +1,19 @@
 <div class="login-page">
-  <div class="login-bg-text">LOGIN</div>
+  <div class="login-bg-text">{{ activeTab === 'signin' ? 'SIGN IN' : 'SIGN UP' }}</div>
 
-  <div class="login-card">
+  <div class="login-card" [class.wide]="activeTab === 'signup' && signupStep === 1">
     <div class="login-brand">
-      
       <span>🚌</span>
       <span class="brand-name">Baguio Jeepney Guide</span>
     </div>
 
     <div class="tab-row">
-      <button class="tab-btn" [class.active]="activeTab === 'login'" (click)="activeTab = 'login'">Login</button>
-      <button class="tab-btn" [class.active]="activeTab === 'register'" (click)="activeTab = 'register'">Register</button>
+      <button class="tab-btn" [class.active]="activeTab === 'signin'" (click)="switchTab('signin')">Sign In</button>
+      <button class="tab-btn" [class.active]="activeTab === 'signup'" (click)="switchTab('signup')">Sign Up</button>
     </div>
 
-    @if (activeTab === 'login') {
+    <!-- SIGN IN -->
+    @if (activeTab === 'signin') {
       <div class="form-section">
         <h2>Welcome back</h2>
         <p class="form-subtitle">Sign in to access the terminal guide</p>
@@ -29,7 +29,7 @@
             type="email"
             placeholder="you@email.com"
             [(ngModel)]="loginEmail"
-            (keyup.enter)="onLogin()"/>
+            (keyup.enter)="onSignIn()"/>
         </div>
 
         <div class="form-group">
@@ -39,25 +39,97 @@
             [type]="showPassword ? 'text' : 'password'"
             placeholder="Enter your password"
             [(ngModel)]="loginPassword"
-            (keyup.enter)="onLogin()"/>
+            (keyup.enter)="onSignIn()"/>
           <button class="toggle-pw" (click)="showPassword = !showPassword" type="button">
             {{ showPassword ? 'Hide' : 'Show' }}
           </button>
         </div>
 
-        <button class="submit-btn" (click)="onLogin()">Sign In</button>
+        <button class="submit-btn" (click)="onSignIn()">Sign In</button>
 
         <p class="switch-text">
           Don't have an account?
-          <button class="link-btn" (click)="activeTab = 'register'">Register here</button>
+          <button class="link-btn" (click)="switchTab('signup')">Sign up here</button>
         </p>
       </div>
     }
 
-    @if (activeTab === 'register') {
+    <!-- SIGN UP STEP 1: User Type -->
+    @if (activeTab === 'signup' && signupStep === 1) {
       <div class="form-section">
-        <h2>Create account</h2>
-        <p class="form-subtitle">Join to save your favorite terminals</p>
+        <h2>I am a...</h2>
+        <p class="form-subtitle">Choose how you'll use this guide</p>
+
+        @if (errorMsg) {
+          <div class="error-msg">{{ errorMsg }}</div>
+        }
+
+        <div class="user-type-grid">
+          <div class="user-type-card"
+            [class.selected]="userType === 'local'"
+            (click)="selectUserType('local')">
+            <div class="user-type-icon local-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+            </div>
+            <h3>Local</h3>
+            <p>Baguio resident, student or daily commuter navigating the city's jeepney routes.</p>
+            @if (userType === 'local') {
+              <div class="selected-check">✓</div>
+            }
+          </div>
+
+          <div class="user-type-card"
+            [class.selected]="userType === 'tourist'"
+            (click)="selectUserType('tourist')">
+            <div class="user-type-icon tourist-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <h3>Tourist</h3>
+            <p>Visitor or first-timer exploring Baguio City and discovering its terminals.</p>
+            @if (userType === 'tourist') {
+              <div class="selected-check">✓</div>
+            }
+          </div>
+        </div>
+
+        <button class="submit-btn" (click)="goToStep2()">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <p class="switch-text">
+          Already have an account?
+          <button class="link-btn" (click)="switchTab('signin')">Sign in here</button>
+        </p>
+      </div>
+    }
+
+    <!-- SIGN UP STEP 2: Form -->
+    @if (activeTab === 'signup' && signupStep === 2) {
+      <div class="form-section">
+        <button class="back-btn" (click)="backToStep1()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Back
+        </button>
+
+        <div class="step2-header">
+          <h2>Create account</h2>
+          <span class="user-type-badge" [class.local-badge]="userType === 'local'" [class.tourist-badge]="userType === 'tourist'">
+            {{ userType === 'local' ? '🏠 Local' : '🌍 Tourist' }}
+          </span>
+        </div>
+        <p class="form-subtitle">Almost there — fill in your details</p>
 
         @if (successMsg) {
           <div class="success-msg">{{ successMsg }}</div>
@@ -105,11 +177,11 @@
             [(ngModel)]="regConfirm"/>
         </div>
 
-        <button class="submit-btn" (click)="onRegister()">Create Account</button>
+        <button class="submit-btn" (click)="onSignUp()">Create Account</button>
 
         <p class="switch-text">
           Already have an account?
-          <button class="link-btn" (click)="activeTab = 'login'">Sign in here</button>
+          <button class="link-btn" (click)="switchTab('signin')">Sign in here</button>
         </p>
       </div>
     }

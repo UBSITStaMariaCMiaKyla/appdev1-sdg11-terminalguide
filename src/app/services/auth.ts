@@ -4,24 +4,27 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class Auth {
-  private loggedIn = false;
-  private currentUserEmail = '';
+  private readonly STORAGE_KEY = 'bjg_user';
 
   login(email: string): void {
-    this.loggedIn = true;
-    this.currentUserEmail = email;
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify({ email }));
   }
 
   logout(): void {
-    this.loggedIn = false;
-    this.currentUserEmail = '';
+    localStorage.removeItem(this.STORAGE_KEY);
   }
 
   isLoggedIn(): boolean {
-    return this.loggedIn;
+    return !!localStorage.getItem(this.STORAGE_KEY);
   }
 
   getUserEmail(): string {
-    return this.currentUserEmail;
+    const data = localStorage.getItem(this.STORAGE_KEY);
+    if (!data) return '';
+    try {
+      return JSON.parse(data).email ?? '';
+    } catch {
+      return '';
+    }
   }
 }

@@ -79,9 +79,20 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initMap(): void {
+    // Cordillera Administrative Region bounding box
+    // Covers Baguio + Benguet + surrounding provinces (La Trinidad, Tuba, Sablan, Itogon, etc.)
+    const carBounds = L.latLngBounds(
+      L.latLng(15.8, 119.9),  // south-west
+      L.latLng(18.0, 121.6)   // north-east
+    );
+
     this.map = L.map('leaflet-map', {
       center: [16.4123, 120.5960],
-      zoom: 15,
+      zoom: 13,
+      minZoom: 10,             // won't zoom out beyond CAR level
+      maxZoom: 20,
+      maxBounds: carBounds,
+      maxBoundsViscosity: 1.0, // hard stop — can't pan outside CAR
       zoomControl: true,
     });
 
@@ -214,7 +225,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       lat = terminal.lat;
       lng = terminal.lng;
     } else {
-      // Fall back to hub location if no individual coords
       lat = this.selectedHub.lat;
       lng = this.selectedHub.lng;
     }

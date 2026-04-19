@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { TerminalService } from '../../services/terminal';
 import { TerminalHub, Terminal } from '../../models/terminal.model';
+import { LoadingSpinner } from '../../components/loading-spinner/loading-spinner';
 
 declare const L: any;
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingSpinner],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -18,6 +19,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   terminalHubs: TerminalHub[] = [];
   filteredHubs: TerminalHub[] = [];
   searchQuery: string = '';
+  mapLoading = true;
   private map: any;
   private hubMarkers: any[] = [];
   private terminalMarkers: any[] = [];
@@ -69,34 +71,12 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       hub.terminals.some(t => this.normalize(t.name).includes(q))
     );
 
-    // Check if query matches a hub name first
     const exactHub = this.filteredHubs.find(h =>
       this.normalize(h.name).includes(q)
     );
 
     if (exactHub && this.mapReady) {
       setTimeout(() => this.selectHub(exactHub), 100);
-      return;
-    }
-
-    // Otherwise check if query matches a specific terminal inside a hub
-    if (this.mapReady) {
-      for (const hub of this.filteredHubs) {
-        const matchedTerminal = hub.terminals.find(t =>
-          this.normalize(t.name).includes(q)
-        );
-        if (matchedTerminal) {
-          setTimeout(() => {
-            // Open the hub panel and show its terminals
-            this.selectHub(hub);
-            // Then zoom to the specific terminal
-            const lat = matchedTerminal.lat ?? hub.lat;
-            const lng = matchedTerminal.lng ?? hub.lng;
-            setTimeout(() => this.map.setView([lat, lng], 19), 150);
-          }, 100);
-          break;
-        }
-      }
     }
   }
 
@@ -116,11 +96,21 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       zoomControl: true,
     });
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: 'abcd',
       maxZoom: 20,
     }).addTo(this.map);
+
+    // Hide spinner once first batch of tiles finishes loading
+    tileLayer.once('load', () => {
+      this.mapLoading = false;
+    });
+
+    // Fallback — hide spinner after 5 seconds regardless
+    setTimeout(() => {
+      this.mapLoading = false;
+    }, 5000);
 
     this.addHubMarkers();
 

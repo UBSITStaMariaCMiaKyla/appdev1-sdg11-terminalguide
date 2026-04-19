@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap');
+
+:host {
+  display: block;
+}
+
+.spinner-overlay {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  transition: opacity 0.4s ease;
+  opacity: 1;
+}
+
+.spinner-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spinner-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* ROAD TRACK */
+.road {
+  width: 260px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* JEEPNEY moving left to right */
+.jeepney {
+  animation: drive 1.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.jeepney img {
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+
+@keyframes drive {
+  0%   { transform: translateX(-20px) translateY(0px); }
+  20%  { transform: translateX(40px)  translateY(-3px); }
+  40%  { transform: translateX(100px) translateY(0px); }
+  60%  { transform: translateX(160px) translateY(-3px); }
+  80%  { transform: translateX(220px) translateY(0px); }
+  100% { transform: translateX(280px) translateY(-2px); }
+}
+
+/* DASHED ROAD LINE */
+.road-line {
+  height: 3px;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(29, 158, 117, 0.5) 0px,
+    rgba(29, 158, 117, 0.5) 20px,
+    transparent 20px,
+    transparent 36px
+  );
+  border-radius: 2px;
+  animation: roadScroll 0.4s linear infinite;
+}
+
+@keyframes roadScroll {
+  from { background-position: 0 0; }
+  to   { background-position: -36px 0; }
+}
+
+/* LABEL */
+.spinner-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: rgba(232, 240, 236, 0.45);
+  letter-spacing: 0.05em;
+}

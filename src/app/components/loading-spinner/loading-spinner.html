@@ -1,1 +1,11 @@
-<p>loading-spinner works!</p>
+<div class="spinner-overlay" [class.hidden]="!visible">
+  <div class="spinner-content">
+    <div class="road">
+      <div class="jeepney">
+        <img src="/assets/jeepney_icon.png" alt="jeepney" width="56" height="48" style="object-fit: contain;"/>
+      </div>
+      <div class="road-line"></div>
+    </div>
+    <p class="spinner-label">Loading map...</p>
+  </div>
+</div>

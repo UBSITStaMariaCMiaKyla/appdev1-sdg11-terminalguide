@@ -1,0 +1,117 @@
+<div class="login-page">
+  <div class="login-bg-text">LOGIN</div>
+
+  <div class="login-card">
+    <div class="login-brand">
+      
+      <span>🚌</span>
+      <span class="brand-name">Baguio Jeepney Guide</span>
+    </div>
+
+    <div class="tab-row">
+      <button class="tab-btn" [class.active]="activeTab === 'login'" (click)="activeTab = 'login'">Login</button>
+      <button class="tab-btn" [class.active]="activeTab === 'register'" (click)="activeTab = 'register'">Register</button>
+    </div>
+
+    @if (activeTab === 'login') {
+      <div class="form-section">
+        <h2>Welcome back</h2>
+        <p class="form-subtitle">Sign in to access the terminal guide</p>
+
+        @if (errorMsg) {
+          <div class="error-msg">{{ errorMsg }}</div>
+        }
+
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input
+            id="login-email"
+            type="email"
+            placeholder="you@email.com"
+            [(ngModel)]="loginEmail"
+            (keyup.enter)="onLogin()"/>
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input
+            id="login-password"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Enter your password"
+            [(ngModel)]="loginPassword"
+            (keyup.enter)="onLogin()"/>
+          <button class="toggle-pw" (click)="showPassword = !showPassword" type="button">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+
+        <button class="submit-btn" (click)="onLogin()">Sign In</button>
+
+        <p class="switch-text">
+          Don't have an account?
+          <button class="link-btn" (click)="activeTab = 'register'">Register here</button>
+        </p>
+      </div>
+    }
+
+    @if (activeTab === 'register') {
+      <div class="form-section">
+        <h2>Create account</h2>
+        <p class="form-subtitle">Join to save your favorite terminals</p>
+
+        @if (successMsg) {
+          <div class="success-msg">{{ successMsg }}</div>
+        }
+        @if (errorMsg) {
+          <div class="error-msg">{{ errorMsg }}</div>
+        }
+
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input
+            id="reg-name"
+            type="text"
+            placeholder="Juan dela Cruz"
+            [(ngModel)]="regName"/>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email">Email</label>
+          <input
+            id="reg-email"
+            type="email"
+            placeholder="you@email.com"
+            [(ngModel)]="regEmail"/>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input
+            id="reg-password"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="At least 6 characters"
+            [(ngModel)]="regPassword"/>
+          <button class="toggle-pw" (click)="showPassword = !showPassword" type="button">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-confirm">Confirm Password</label>
+          <input
+            id="reg-confirm"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Repeat your password"
+            [(ngModel)]="regConfirm"/>
+        </div>
+
+        <button class="submit-btn" (click)="onRegister()">Create Account</button>
+
+        <p class="switch-text">
+          Already have an account?
+          <button class="link-btn" (click)="activeTab = 'login'">Sign in here</button>
+        </p>
+      </div>
+    }
+  </div>
+</div>

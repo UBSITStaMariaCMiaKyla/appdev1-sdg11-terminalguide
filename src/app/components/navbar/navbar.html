@@ -12,9 +12,46 @@
     <a routerLink="/sdg-info" routerLinkActive="active">SDG Info</a>
     <a routerLink="/feedback" routerLinkActive="active">Feedback</a>
   </nav>
-  <button class="navbar-login-btn">Login</button>
 
-   <button class="navbar-hamburger" (click)="toggleMenu()">
+  @if (!isLoggedIn()) {
+    <a routerLink="/login" class="navbar-login-btn">Login</a>
+  }
+
+  @if (isLoggedIn()) {
+    <div class="navbar-profile" (click)="toggleDropdown()">
+      <div class="avatar">{{ getInitials() }}</div>
+      <svg class="chevron" [class.open]="dropdownOpen" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+      @if (dropdownOpen) {
+        <div class="dropdown-menu">
+          <div class="dropdown-user">
+            <div class="dropdown-avatar">{{ getInitials() }}</div>
+            <div class="dropdown-user-info">
+              <span class="dropdown-name">{{ getUserName() }}</span>
+              <span class="dropdown-email">{{ getUserEmail() }}</span>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a routerLink="/profile" class="dropdown-item" (click)="closeDropdown()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Profile
+          </a>
+          <a routerLink="/settings" class="dropdown-item" (click)="closeDropdown()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+          </a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item logout" (click)="onLogout()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Logout
+          </button>
+        </div>
+      }
+    </div>
+  }
+
+  <button class="navbar-hamburger" (click)="toggleMenu()">
     <span></span>
     <span></span>
     <span></span>
@@ -25,8 +62,14 @@
     <a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu()">Dashboard</a>
     <a routerLink="/sdg-info" routerLinkActive="active" (click)="closeMenu()">SDG Info</a>
     <a routerLink="/feedback" routerLinkActive="active" (click)="closeMenu()">Feedback</a>
-    <button class="navbar-login-btn">Login</button>
+    @if (!isLoggedIn()) {
+      <a routerLink="/login" class="navbar-login-btn" (click)="closeMenu()">Login</a>
+    }
+    @if (isLoggedIn()) {
+      <button class="dropdown-item logout mobile-logout" (click)="onLogout()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    }
   </div>
-
-  
 </header>

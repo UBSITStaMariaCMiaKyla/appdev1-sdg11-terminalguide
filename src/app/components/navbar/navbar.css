@@ -14,7 +14,11 @@ header.navbar {
 }
 
 .navbar-brand {
-  justify-self: start;
+  text-decoration: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .navbar-title-group {

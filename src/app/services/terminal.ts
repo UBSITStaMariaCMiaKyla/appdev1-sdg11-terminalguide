@@ -16,7 +16,7 @@ export class TerminalService {
         { no: 1, name: 'Aurora Hill Jeepney Stop', lat: 16.412450, lng: 120.5959 },
         { no: 2, name: 'Camp 8', lat: 16.412650, lng: 120.5961 },
         { no: 3, name: 'PNR', lat: 16.412780, lng: 120.59623 },
-        { no: 4, name: 'Hillside', lat: 16.4121, lng: 120.5968 },
+        { no: 4, name: 'Hillside', lat: 16.412450, lng: 120.5966 },
         { no: 5, name: 'Dagsian', lat: 16.4121, lng: 120.5968 },
         { no: 6, name: 'Loakan', lat: 16.4121, lng: 120.5968 },
         { no: 7, name: 'Navy Base', lat: 16.4121, lng: 120.5968 },

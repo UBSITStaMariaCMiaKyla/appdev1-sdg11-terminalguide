@@ -19,6 +19,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   terminalHubs: TerminalHub[] = [];
   filteredHubs: TerminalHub[] = [];
   searchQuery: string = '';
+  highlightedTerminalNo: number | null = null;
 
   mapLoading = false;
   private loadingTimer: any;
@@ -70,22 +71,56 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     if (!query.trim()) {
       this.filteredHubs = this.terminalHubs;
       this.selectedHub = null;
+      this.highlightedTerminalNo = null;
       this.clearTerminalMarkers();
       return;
     }
 
     const q = this.normalize(query);
+
     this.filteredHubs = this.terminalHubs.filter(hub =>
       this.normalize(hub.name).includes(q) ||
       hub.terminals.some(t => this.normalize(t.name).includes(q))
     );
 
+    // Check if query matches a hub name directly
     const exactHub = this.filteredHubs.find(h =>
       this.normalize(h.name).includes(q)
     );
 
     if (exactHub && this.mapReady) {
+      this.highlightedTerminalNo = null;
       setTimeout(() => this.selectHub(exactHub), 100);
+      return;
+    }
+
+    // Check if query matches a sub-terminal name
+    for (const hub of this.filteredHubs) {
+      const matchedTerminal = hub.terminals.find(t =>
+        this.normalize(t.name).includes(q)
+      );
+
+      if (matchedTerminal && this.mapReady) {
+        this.highlightedTerminalNo = matchedTerminal.no;
+
+        setTimeout(() => {
+          // Open the hub dropdown
+          this.selectedHub = hub;
+          this.addTerminalMarkers(hub);
+
+          // Zoom to the specific sub-terminal
+          const lat = matchedTerminal.lat ?? hub.lat;
+          const lng = matchedTerminal.lng ?? hub.lng;
+          this.map.setView([lat, lng], 19);
+
+          // Show Para Po card for matched terminal
+          this.selectedTerminal = matchedTerminal;
+          this.selectedTerminalLat = lat;
+          this.selectedTerminalLng = lng;
+          this.routingError = '';
+        }, 100);
+        break;
+      }
     }
   }
 
@@ -227,6 +262,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
 
   selectHub(hub: TerminalHub): void {
     this.closeParaPoCard();
+    this.highlightedTerminalNo = null;
     if (this.selectedHub?.id === hub.id) {
       this.selectedHub = null;
       this.clearTerminalMarkers();
@@ -245,6 +281,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     this.selectedTerminal = terminal;
     this.selectedTerminalLat = lat;
     this.selectedTerminalLng = lng;
+    this.highlightedTerminalNo = terminal.no;
     this.routingError = '';
   }
 

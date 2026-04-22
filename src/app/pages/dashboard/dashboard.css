@@ -153,6 +153,20 @@
   color: rgba(13, 46, 34, 0.7);
 }
 
+.terminal-item.clickable {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.terminal-item.clickable:hover {
+  background: rgba(29, 158, 117, 0.06);
+}
+
+.terminal-item.highlighted {
+  background: rgba(29, 158, 117, 0.12);
+  border-left: 3px solid #1D9E75;
+}
+
 /* MAP */
 .map-container {
   flex: 1;
@@ -229,15 +243,6 @@
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   color: #9ca3af;
-}
-
-.terminal-item.clickable {
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.terminal-item.clickable:hover {
-  background: rgba(29, 158, 117, 0.06);
 }
 
 /* PARA PO CARD */

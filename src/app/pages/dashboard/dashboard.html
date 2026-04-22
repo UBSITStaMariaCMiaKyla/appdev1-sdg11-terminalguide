@@ -30,7 +30,9 @@
 
         <div class="terminal-dropdown" [class.open]="selectedHub?.id === hub.id">
           @for (terminal of hub.terminals; track terminal.no) {
-            <div class="terminal-item clickable" (click)="selectTerminal(terminal)">
+            <div class="terminal-item clickable"
+              [class.highlighted]="highlightedTerminalNo === terminal.no && selectedHub?.id === hub.id"
+              (click)="selectTerminal(terminal)">
               <span class="terminal-no"
                 [style.background]="hub.color + '22'"
                 [style.color]="hub.color">

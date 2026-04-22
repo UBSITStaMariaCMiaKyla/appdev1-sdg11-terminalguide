@@ -19,10 +19,21 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   terminalHubs: TerminalHub[] = [];
   filteredHubs: TerminalHub[] = [];
   searchQuery: string = '';
-  mapLoading = true;
+
+  mapLoading = false;
+  private loadingTimer: any;
+
+  selectedTerminal: Terminal | null = null;
+  selectedTerminalLat: number | null = null;
+  selectedTerminalLng: number | null = null;
+  isRouting = false;
+  routingError = '';
+
   private map: any;
   private hubMarkers: any[] = [];
   private terminalMarkers: any[] = [];
+  routingControl: any = null;
+  private userMarker: any = null;
   private mapReady = false;
 
   constructor(
@@ -47,9 +58,8 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.map) {
-      this.map.remove();
-    }
+    if (this.map) this.map.remove();
+    if (this.loadingTimer) clearTimeout(this.loadingTimer);
   }
 
   private normalize(s: string): string {
@@ -65,7 +75,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     }
 
     const q = this.normalize(query);
-
     this.filteredHubs = this.terminalHubs.filter(hub =>
       this.normalize(hub.name).includes(q) ||
       hub.terminals.some(t => this.normalize(t.name).includes(q))
@@ -81,6 +90,10 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initMap(): void {
+    this.loadingTimer = setTimeout(() => {
+      this.mapLoading = true;
+    }, 800);
+
     const carBounds = L.latLngBounds(
       L.latLng(15.8, 119.9),
       L.latLng(18.0, 121.6)
@@ -102,15 +115,15 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       maxZoom: 20,
     }).addTo(this.map);
 
-    // Hide spinner once first batch of tiles finishes loading
     tileLayer.once('load', () => {
+      clearTimeout(this.loadingTimer);
       this.mapLoading = false;
     });
 
-    // Fallback — hide spinner after 5 seconds regardless
     setTimeout(() => {
+      clearTimeout(this.loadingTimer);
       this.mapLoading = false;
-    }, 5000);
+    }, 6000);
 
     this.addHubMarkers();
 
@@ -127,8 +140,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       const markerHtml = `
         <div style="
           background: ${hub.color};
-          width: 18px;
-          height: 18px;
+          width: 18px; height: 18px;
           border-radius: 50%;
           border: 3px solid white;
           box-shadow: 0 2px 8px rgba(0,0,0,0.5);
@@ -173,18 +185,13 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       const markerHtml = `
         <div style="
           background: ${hub.color};
-          width: 26px;
-          height: 26px;
+          width: 26px; height: 26px;
           border-radius: 50%;
           border: 2px solid white;
           box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 10px;
-          font-weight: 700;
-          color: white;
-          cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 10px; font-weight: 700;
+          color: white; cursor: pointer;
           font-family: Inter, sans-serif;
         ">${terminal.no}</div>`;
 
@@ -203,6 +210,10 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
         })
         .on('click', () => {
           this.map.setView([lat, lng], 18);
+          this.selectedTerminal = terminal;
+          this.selectedTerminalLat = lat;
+          this.selectedTerminalLng = lng;
+          this.routingError = '';
         });
 
       this.terminalMarkers.push({ marker, lat, lng });
@@ -215,6 +226,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   }
 
   selectHub(hub: TerminalHub): void {
+    this.closeParaPoCard();
     if (this.selectedHub?.id === hub.id) {
       this.selectedHub = null;
       this.clearTerminalMarkers();
@@ -227,23 +239,93 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
 
   selectTerminal(terminal: Terminal): void {
     if (!this.selectedHub) return;
+    const lat = terminal.lat ?? this.selectedHub.lat;
+    const lng = terminal.lng ?? this.selectedHub.lng;
+    this.map.setView([lat, lng], 20);
+    this.selectedTerminal = terminal;
+    this.selectedTerminalLat = lat;
+    this.selectedTerminalLng = lng;
+    this.routingError = '';
+  }
 
-    let lat: number;
-    let lng: number;
+  paraPoClicked(): void {
+    if (!this.selectedTerminalLat || !this.selectedTerminalLng) return;
+    this.isRouting = true;
+    this.routingError = '';
 
-    if (terminal.lat && terminal.lng) {
-      lat = terminal.lat;
-      lng = terminal.lng;
-    } else {
-      lat = this.selectedHub.lat;
-      lng = this.selectedHub.lng;
+    if (!navigator.geolocation) {
+      this.routingError = 'GPS not supported on this device.';
+      this.isRouting = false;
+      return;
     }
 
-    this.map.setView([lat, lng], 20);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+
+        this.clearRoute();
+
+        this.userMarker = L.circleMarker([userLat, userLng], {
+          radius: 8,
+          color: '#1D9E75',
+          fillColor: '#1D9E75',
+          fillOpacity: 1,
+          weight: 3,
+        }).addTo(this.map).bindTooltip('You are here', { direction: 'top' });
+
+        this.routingControl = (L as any).Routing.control({
+          waypoints: [
+            L.latLng(userLat, userLng),
+            L.latLng(this.selectedTerminalLat!, this.selectedTerminalLng!),
+          ],
+          routeWhileDragging: false,
+          addWaypoints: false,
+          draggableWaypoints: false,
+          fitSelectedRoutes: true,
+          show: false,
+          lineOptions: {
+            styles: [{ color: '#1D9E75', weight: 5, opacity: 0.8 }],
+          },
+          createMarker: () => null,
+        }).addTo(this.map);
+
+        this.isRouting = false;
+      },
+      (error) => {
+        this.isRouting = false;
+        if (error.code === error.PERMISSION_DENIED) {
+          this.routingError = 'Please allow location access to use navigation.';
+        } else {
+          this.routingError = 'Could not get your location. Try again.';
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
+
+  clearRoute(): void {
+    if (this.routingControl) {
+      this.map.removeControl(this.routingControl);
+      this.routingControl = null;
+    }
+    if (this.userMarker) {
+      this.userMarker.remove();
+      this.userMarker = null;
+    }
+  }
+
+  closeParaPoCard(): void {
+    this.selectedTerminal = null;
+    this.selectedTerminalLat = null;
+    this.selectedTerminalLng = null;
+    this.routingError = '';
+    this.clearRoute();
   }
 
   closePanel(): void {
     this.selectedHub = null;
     this.clearTerminalMarkers();
+    this.closeParaPoCard();
   }
 }

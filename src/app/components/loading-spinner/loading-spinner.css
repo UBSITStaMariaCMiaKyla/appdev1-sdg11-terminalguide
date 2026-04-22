@@ -7,7 +7,7 @@
 .spinner-overlay {
   position: absolute;
   inset: 0;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,7 +28,6 @@
   gap: 1.5rem;
 }
 
-/* ROAD TRACK */
 .road {
   width: 260px;
   position: relative;
@@ -37,7 +36,6 @@
   gap: 8px;
 }
 
-/* JEEPNEY moving left to right */
 .jeepney {
   animation: drive 1.6s ease-in-out infinite;
   will-change: transform;
@@ -45,7 +43,7 @@
 
 .jeepney img {
   display: block;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
 }
 
 @keyframes drive {
@@ -57,7 +55,6 @@
   100% { transform: translateX(280px) translateY(-2px); }
 }
 
-/* DASHED ROAD LINE */
 .road-line {
   height: 3px;
   background: repeating-linear-gradient(
@@ -76,11 +73,10 @@
   to   { background-position: -36px 0; }
 }
 
-/* LABEL */
 .spinner-label {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.85rem;
-  font-weight: 400;
-  color: rgba(232, 240, 236, 0.45);
+  font-weight: 500;
+  color: #0d2e22;
   letter-spacing: 0.05em;
 }

@@ -47,9 +47,38 @@
   <main class="map-container">
     <app-loading-spinner [visible]="mapLoading"></app-loading-spinner>
     <div id="leaflet-map" style="width:100%;height:100%;"></div>
+
     <div class="map-overlay-title">
       <span>Baguio City</span>
       <small>Jeepney Terminal Guide</small>
     </div>
+
+    @if (selectedTerminal) {
+      <div class="para-po-card">
+        <div class="para-po-header">
+          <div class="para-po-info">
+            <span class="para-po-label">Selected Terminal</span>
+            <span class="para-po-name">{{ selectedTerminal.name }}</span>
+          </div>
+          <button class="para-po-close" (click)="closeParaPoCard()">✕</button>
+        </div>
+        @if (routingError) {
+          <p class="para-po-error">{{ routingError }}</p>
+        }
+        <button
+          class="para-po-btn"
+          (click)="paraPoClicked()"
+          [disabled]="isRouting">
+          @if (isRouting) {
+            <span>Getting location...</span>
+          } @else {
+            <span>Para Po!</span>
+          }
+        </button>
+        @if (routingControl) {
+          <button class="cancel-route-btn" (click)="clearRoute()">Cancel Route</button>
+        }
+      </div>
+    }
   </main>
 </div>

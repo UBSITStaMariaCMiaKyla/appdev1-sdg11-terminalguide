@@ -1,9 +1,4 @@
 .weather-widget {
-    margin: auto 0.75rem 0.75rem;
-    background: rgba(255, 255, 255, 0.45);
-    border: 1px solid rgba(134, 193, 183, 0.35);
-    border-radius: 12px;
-    padding: 0.9rem 1rem;
     font-family: 'Inter', sans-serif;
   }
   

@@ -53,18 +53,20 @@
       }
     </div>
 
-    <!-- Live Baguio weather — always visible at sidebar bottom -->
-    <app-weather-widget></app-weather-widget>
-
   </aside>
 
   <main class="map-container">
     <app-loading-spinner [visible]="mapLoading"></app-loading-spinner>
     <div id="leaflet-map" style="width:100%;height:100%;"></div>
 
+    <!-- Map overlay: title + live weather API data -->
     <div class="map-overlay-title">
-      <span>Baguio City</span>
-      <small>Jeepney Terminal Guide</small>
+      <div class="overlay-header">
+        <span class="overlay-city">Baguio City</span>
+        <small class="overlay-sub">Jeepney Terminal Guide</small>
+      </div>
+      <div class="overlay-divider"></div>
+      <app-weather-widget></app-weather-widget>
     </div>
 
     @if (selectedTerminal) {

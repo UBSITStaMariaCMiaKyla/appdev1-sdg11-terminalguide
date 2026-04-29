@@ -181,6 +181,7 @@
 }
 
 .map-overlay-title {
+  gap: 0.5rem;
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -194,23 +195,12 @@
   display: flex;
   flex-direction: column;
   z-index: 1000;
-  pointer-events: none;
+  
   box-shadow: 0 2px 16px rgba(134, 193, 183, 0.25);
   backdrop-filter: blur(6px);
 }
 
-.map-overlay-title span {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #0d2e22;
-}
 
-.map-overlay-title small {
-  font-size: 0.68rem;
-  color: rgba(13, 46, 34, 0.45);
-  margin-top: 2px;
-}
 
 /* LEAFLET OVERRIDES */
 .leaflet-control-zoom a {
@@ -386,6 +376,7 @@
   }
 
   .map-overlay-title {
+  gap: 0.5rem;
     top: 0.5rem;
     right: 0.5rem;
     padding: 6px 10px;
@@ -426,4 +417,34 @@
   .terminal-item {
     padding: 0.4rem 1rem;
   }
+}
+/* MAP OVERLAY — weather extension */
+.overlay-header {
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.overlay-city {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0d2e22;
+}
+
+.overlay-sub {
+  font-size: 0.68rem;
+  color: rgba(13, 46, 34, 0.45);
+  margin-top: 2px;
+}
+
+.overlay-divider {
+  height: 1px;
+  background: rgba(134, 193, 183, 0.4);
+  margin: 0.25rem 0;
+}
+
+/* Scope weather widget styles inside the overlay */
+.map-overlay-title app-weather-widget {
+  display: block;
 }

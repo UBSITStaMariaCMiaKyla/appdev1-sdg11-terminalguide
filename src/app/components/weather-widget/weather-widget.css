@@ -1,0 +1,104 @@
+.weather-widget {
+    margin: auto 0.75rem 0.75rem;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(134, 193, 183, 0.35);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .weather-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .weather-top {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  
+  .weather-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  
+  .weather-main {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .weather-temp {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0d2e22;
+    line-height: 1;
+  }
+  
+  .weather-condition {
+    font-size: 0.75rem;
+    color: rgba(13, 46, 34, 0.55);
+    margin-top: 2px;
+  }
+  
+  .weather-location {
+    font-size: 0.7rem;
+    color: rgba(13, 46, 34, 0.4);
+    letter-spacing: 0.02em;
+  }
+  
+  .weather-details {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.25rem;
+  }
+  
+  .weather-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.75rem;
+    color: rgba(13, 46, 34, 0.65);
+  }
+  
+  .detail-icon {
+    font-size: 0.75rem;
+  }
+  
+  .weather-divider {
+    width: 1px;
+    height: 12px;
+    background: rgba(134, 193, 183, 0.4);
+  }
+  
+  /* Loading skeleton */
+  .weather-loading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .weather-skeleton {
+    height: 16px;
+    border-radius: 6px;
+    background: linear-gradient(90deg,
+      rgba(134, 193, 183, 0.2) 25%,
+      rgba(134, 193, 183, 0.4) 50%,
+      rgba(134, 193, 183, 0.2) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+  }
+  
+  .weather-skeleton.short {
+    width: 60%;
+  }
+  
+  @keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }

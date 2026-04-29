@@ -1,1 +1,30 @@
-<p>weather-widget works!</p>
+<div class="weather-widget">
+    @if (weather$ | async; as weather) {
+      <div class="weather-content">
+        <div class="weather-top">
+          <span class="weather-icon">{{ weather.icon }}</span>
+          <div class="weather-main">
+            <span class="weather-temp">{{ weather.temp }}°C</span>
+            <span class="weather-condition">{{ weather.condition }}</span>
+          </div>
+        </div>
+        <div class="weather-location">📍 Baguio City, PH</div>
+        <div class="weather-details">
+          <div class="weather-detail">
+            <span class="detail-icon">💧</span>
+            <span>{{ weather.humidity }}%</span>
+          </div>
+          <div class="weather-divider"></div>
+          <div class="weather-detail">
+            <span class="detail-icon">💨</span>
+            <span>{{ weather.windSpeed }} km/h</span>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="weather-loading">
+        <div class="weather-skeleton"></div>
+        <div class="weather-skeleton short"></div>
+      </div>
+    }
+  </div>

@@ -5,13 +5,14 @@ import { Observable, combineLatest, map, startWith, tap } from 'rxjs';
 import { TerminalService } from '../../services/terminal';
 import { TerminalHub, Terminal } from '../../models/terminal.model';
 import { LoadingSpinner } from '../../components/loading-spinner/loading-spinner';
+import { WeatherWidget } from '../../components/weather-widget/weather-widget';
 
 declare const L: any;
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, LoadingSpinner],
+  imports: [CommonModule, LoadingSpinner, WeatherWidget],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { TerminalService } from '../../services/terminal';
+import { TerminalHub } from '../../models/terminal.model';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,11 +13,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './search-bar.html',
   styleUrls: ['./search-bar.css']
 })
-export class SearchBar {
+export class SearchBar implements OnInit {
   searchTerm: string = '';
   suggestions: { label: string; sublabel: string }[] = [];
   showSuggestions: boolean = false;
   activeIndex: number = -1;
+
+  private allHubs: TerminalHub[] = [];
 
   private readonly placeholders: string[] = [
     'Baguio City, ano tara???',
@@ -37,7 +40,6 @@ export class SearchBar {
   placeholder: string = '';
 
   constructor(private router: Router, private terminalService: TerminalService) {
-    // Pick a random placeholder on every load
     this.placeholder = this.placeholders[
       Math.floor(Math.random() * this.placeholders.length)
     ];
@@ -54,6 +56,13 @@ export class SearchBar {
       });
   }
 
+  ngOnInit(): void {
+    // Load hubs once via HTTP GET — stored locally for suggestion lookup
+    this.terminalService.getHubs().subscribe(hubs => {
+      this.allHubs = hubs;
+    });
+  }
+
   onInput(): void {
     this.activeIndex = -1;
     const q = this.searchTerm.trim().toLowerCase();
@@ -64,9 +73,8 @@ export class SearchBar {
     }
 
     const results: { label: string; sublabel: string }[] = [];
-    const hubs = this.terminalService.getHubs();
 
-    for (const hub of hubs) {
+    for (const hub of this.allHubs) {
       if (hub.name.toLowerCase().includes(q)) {
         results.push({ label: hub.name, sublabel: 'Terminal Hub' });
       }

@@ -23,12 +23,15 @@ export class TerminalDetail implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.hub = this.terminalService.getHubById(id) ?? null;
-      if (!this.hub) this.notFound = true;
-    } else {
+    if (!id) {
       this.notFound = true;
+      return;
     }
+
+    this.terminalService.getHubs().subscribe(hubs => {
+      this.hub = hubs.find(h => h.id === id) ?? null;
+      if (!this.hub) this.notFound = true;
+    });
   }
 
   goBack(): void {

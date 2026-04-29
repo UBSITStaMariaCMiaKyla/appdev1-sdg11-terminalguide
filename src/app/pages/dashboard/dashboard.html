@@ -6,42 +6,50 @@
     </div>
 
     <div class="hub-list">
-      @if (filteredHubs.length === 0) {
+      @if (isLoading) {
         <div class="no-results">
-          <span>No terminals found for "{{ searchQuery }}"</span>
+          <span>Loading terminals...</span>
         </div>
       }
 
-      @for (hub of filteredHubs; track hub.id) {
-        <div
-          class="hub-item"
-          [class.active]="selectedHub?.id === hub.id"
-          (click)="selectHub(hub)">
-          <div class="hub-dot" [style.background]="hub.color"></div>
-          <div class="hub-info">
-            <span class="hub-name">{{ hub.name }}</span>
-            <span class="hub-count">{{ hub.terminals.length }} terminals</span>
+      @if (filteredHubs$ | async; as hubs) {
+        @if (hubs.length === 0 && !isLoading) {
+          <div class="no-results">
+            <span>No terminals found for "{{ searchQuery }}"</span>
           </div>
-          <svg class="hub-arrow" [class.rotated]="selectedHub?.id === hub.id"
-            width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M6 9l6 6 6-6"/>
-          </svg>
-        </div>
+        }
 
-        <div class="terminal-dropdown" [class.open]="selectedHub?.id === hub.id">
-          @for (terminal of hub.terminals; track terminal.no) {
-            <div class="terminal-item clickable"
-              [class.highlighted]="highlightedTerminalNo === terminal.no && selectedHub?.id === hub.id"
-              (click)="selectTerminal(terminal)">
-              <span class="terminal-no"
-                [style.background]="hub.color + '22'"
-                [style.color]="hub.color">
-                {{ terminal.no }}
-              </span>
-              <span class="terminal-name">{{ terminal.name }}</span>
+        @for (hub of hubs; track hub.id) {
+          <div
+            class="hub-item"
+            [class.active]="selectedHub?.id === hub.id"
+            (click)="selectHub(hub)">
+            <div class="hub-dot" [style.background]="hub.color"></div>
+            <div class="hub-info">
+              <span class="hub-name">{{ hub.name }}</span>
+              <span class="hub-count">{{ hub.terminals.length }} terminals</span>
             </div>
-          }
-        </div>
+            <svg class="hub-arrow" [class.rotated]="selectedHub?.id === hub.id"
+              width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </div>
+
+          <div class="terminal-dropdown" [class.open]="selectedHub?.id === hub.id">
+            @for (terminal of hub.terminals; track terminal.no) {
+              <div class="terminal-item clickable"
+                [class.highlighted]="highlightedTerminalNo === terminal.no && selectedHub?.id === hub.id"
+                (click)="selectTerminal(terminal)">
+                <span class="terminal-no"
+                  [style.background]="hub.color + '22'"
+                  [style.color]="hub.color">
+                  {{ terminal.no }}
+                </span>
+                <span class="terminal-name">{{ terminal.name }}</span>
+              </div>
+            }
+          </div>
+        }
       }
     </div>
   </aside>

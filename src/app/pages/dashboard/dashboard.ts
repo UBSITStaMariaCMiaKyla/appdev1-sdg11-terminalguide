@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Observable, combineLatest, map, startWith, tap } from 'rxjs';
 import { TerminalService } from '../../services/terminal';
 import { TerminalHub, Terminal } from '../../models/terminal.model';
 import { LoadingSpinner } from '../../components/loading-spinner/loading-spinner';
@@ -15,9 +16,12 @@ declare const L: any;
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
+  // Observable exposed for async pipe
+  hubs$!: Observable<TerminalHub[]>;
+  filteredHubs$!: Observable<TerminalHub[]>;
+  isLoading = true;
+
   selectedHub: TerminalHub | null = null;
-  terminalHubs: TerminalHub[] = [];
-  filteredHubs: TerminalHub[] = [];
   searchQuery: string = '';
   highlightedTerminalNo: number | null = null;
 
@@ -36,6 +40,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   routingControl: any = null;
   private userMarker: any = null;
   private mapReady = false;
+  private allHubs: TerminalHub[] = [];
 
   constructor(
     private terminalService: TerminalService,
@@ -43,24 +48,50 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.terminalHubs = this.terminalService.getHubs();
-    this.filteredHubs = this.terminalHubs;
+    // HTTP GET via service — satisfies requirement #2
+    this.hubs$ = this.terminalService.getHubs().pipe(
+      tap(hubs => {
+        this.allHubs = hubs;
+        this.isLoading = false;
+        if (this.mapReady) {
+          this.renderHubMarkers(hubs);
+          if (this.searchQuery) {
+            setTimeout(() => this.applySearch(this.searchQuery), 100);
+          }
+        }
+      })
+    );
 
-    this.route.queryParams.subscribe(params => {
-      const search = params['search'] || '';
-      this.searchQuery = search;
-      if (this.mapReady) {
-        this.applySearch(search);
-      }
-    });
+    // filteredHubs$ reacts to search query params
+    this.filteredHubs$ = combineLatest([
+      this.hubs$,
+      this.route.queryParams.pipe(startWith({ search: '' }))
+    ]).pipe(
+      map(([hubs, params]) => {
+        const query = params['search'] || '';
+        this.searchQuery = query;
+        if (!query.trim()) return hubs;
+        const q = query.toLowerCase().replace(/[-–—]/g, '-');
+        return hubs.filter(hub =>
+          hub.name.toLowerCase().replace(/[-–—]/g, '-').includes(q) ||
+          hub.terminals.some(t =>
+            t.name.toLowerCase().replace(/[-–—]/g, '-').includes(q)
+          )
+        );
+      })
+    );
   }
 
   ngAfterViewInit(): void {
     this.initMap();
     this.mapReady = true;
 
-    if (this.searchQuery) {
-      setTimeout(() => this.applySearch(this.searchQuery), 300);
+    // If hubs already loaded, render markers now
+    if (this.allHubs.length) {
+      this.renderHubMarkers(this.allHubs);
+      if (this.searchQuery) {
+        setTimeout(() => this.applySearch(this.searchQuery), 300);
+      }
     }
   }
 
@@ -75,7 +106,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
 
   private applySearch(query: string): void {
     if (!query.trim()) {
-      this.filteredHubs = this.terminalHubs;
       this.selectedHub = null;
       this.highlightedTerminalNo = null;
       this.clearTerminalMarkers();
@@ -83,56 +113,41 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     }
 
     const q = this.normalize(query);
+    const hubs = this.allHubs;
 
-    this.filteredHubs = this.terminalHubs.filter(hub =>
-      this.normalize(hub.name).includes(q) ||
-      hub.terminals.some(t => this.normalize(t.name).includes(q))
-    );
-
-    // Check hub name match first
-    const exactHub = this.filteredHubs.find(h =>
-      this.normalize(h.name).includes(q)
-    );
+    const exactHub = hubs.find(h => this.normalize(h.name).includes(q));
 
     if (exactHub) {
       this.highlightedTerminalNo = null;
-      if (this.mapReady) {
-        setTimeout(() => {
-          this.closeParaPoCard();
-          this.selectedHub = exactHub;
-          this.map.setView([exactHub.lat, exactHub.lng], 17);
-          this.addTerminalMarkers(exactHub);
-        }, 150);
-      }
+      setTimeout(() => {
+        this.closeParaPoCard();
+        this.selectedHub = exactHub;
+        this.map.setView([exactHub.lat, exactHub.lng], 17);
+        this.addTerminalMarkers(exactHub);
+      }, 150);
       return;
     }
 
-    // Check sub-terminal match
-    for (const hub of this.filteredHubs) {
+    for (const hub of hubs) {
       const matchedTerminal = hub.terminals.find(t =>
         this.normalize(t.name).includes(q)
       );
-
       if (matchedTerminal) {
         this.highlightedTerminalNo = matchedTerminal.no;
-
-        if (this.mapReady) {
+        setTimeout(() => {
+          this.closeParaPoCard();
+          this.selectedHub = hub;
+          this.addTerminalMarkers(hub);
           setTimeout(() => {
-            this.closeParaPoCard();
-            this.selectedHub = hub;
-            this.addTerminalMarkers(hub);
-
-            setTimeout(() => {
-              const lat = matchedTerminal.lat ?? hub.lat;
-              const lng = matchedTerminal.lng ?? hub.lng;
-              this.map.setView([lat, lng], 19);
-              this.selectedTerminal = matchedTerminal;
-              this.selectedTerminalLat = lat;
-              this.selectedTerminalLng = lng;
-              this.routingError = '';
-            }, 100);
-          }, 150);
-        }
+            const lat = matchedTerminal.lat ?? hub.lat;
+            const lng = matchedTerminal.lng ?? hub.lng;
+            this.map.setView([lat, lng], 19);
+            this.selectedTerminal = matchedTerminal;
+            this.selectedTerminalLat = lat;
+            this.selectedTerminalLng = lng;
+            this.routingError = '';
+          }, 100);
+        }, 150);
         break;
       }
     }
@@ -173,15 +188,13 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       clearTimeout(this.loadingTimer);
       this.mapLoading = false;
     }, 6000);
-
-    this.addHubMarkers();
   }
 
-  private addHubMarkers(): void {
+  private renderHubMarkers(hubs: TerminalHub[]): void {
     this.hubMarkers.forEach(m => m.remove());
     this.hubMarkers = [];
 
-    this.terminalHubs.forEach(hub => {
+    hubs.forEach(hub => {
       const markerHtml = `
         <div style="
           background: ${hub.color};

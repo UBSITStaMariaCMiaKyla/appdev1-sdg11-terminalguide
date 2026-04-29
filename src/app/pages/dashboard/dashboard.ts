@@ -49,13 +49,19 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       const search = params['search'] || '';
       this.searchQuery = search;
-      this.applySearch(search);
+      if (this.mapReady) {
+        this.applySearch(search);
+      }
     });
   }
 
   ngAfterViewInit(): void {
     this.initMap();
     this.mapReady = true;
+
+    if (this.searchQuery) {
+      setTimeout(() => this.applySearch(this.searchQuery), 300);
+    }
   }
 
   ngOnDestroy(): void {
@@ -83,42 +89,50 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       hub.terminals.some(t => this.normalize(t.name).includes(q))
     );
 
-    // Check if query matches a hub name directly
+    // Check hub name match first
     const exactHub = this.filteredHubs.find(h =>
       this.normalize(h.name).includes(q)
     );
 
-    if (exactHub && this.mapReady) {
+    if (exactHub) {
       this.highlightedTerminalNo = null;
-      setTimeout(() => this.selectHub(exactHub), 100);
+      if (this.mapReady) {
+        setTimeout(() => {
+          this.closeParaPoCard();
+          this.selectedHub = exactHub;
+          this.map.setView([exactHub.lat, exactHub.lng], 17);
+          this.addTerminalMarkers(exactHub);
+        }, 150);
+      }
       return;
     }
 
-    // Check if query matches a sub-terminal name
+    // Check sub-terminal match
     for (const hub of this.filteredHubs) {
       const matchedTerminal = hub.terminals.find(t =>
         this.normalize(t.name).includes(q)
       );
 
-      if (matchedTerminal && this.mapReady) {
+      if (matchedTerminal) {
         this.highlightedTerminalNo = matchedTerminal.no;
 
-        setTimeout(() => {
-          // Open the hub dropdown
-          this.selectedHub = hub;
-          this.addTerminalMarkers(hub);
+        if (this.mapReady) {
+          setTimeout(() => {
+            this.closeParaPoCard();
+            this.selectedHub = hub;
+            this.addTerminalMarkers(hub);
 
-          // Zoom to the specific sub-terminal
-          const lat = matchedTerminal.lat ?? hub.lat;
-          const lng = matchedTerminal.lng ?? hub.lng;
-          this.map.setView([lat, lng], 19);
-
-          // Show Para Po card for matched terminal
-          this.selectedTerminal = matchedTerminal;
-          this.selectedTerminalLat = lat;
-          this.selectedTerminalLng = lng;
-          this.routingError = '';
-        }, 100);
+            setTimeout(() => {
+              const lat = matchedTerminal.lat ?? hub.lat;
+              const lng = matchedTerminal.lng ?? hub.lng;
+              this.map.setView([lat, lng], 19);
+              this.selectedTerminal = matchedTerminal;
+              this.selectedTerminalLat = lat;
+              this.selectedTerminalLng = lng;
+              this.routingError = '';
+            }, 100);
+          }, 150);
+        }
         break;
       }
     }
@@ -161,10 +175,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     }, 6000);
 
     this.addHubMarkers();
-
-    if (this.searchQuery) {
-      setTimeout(() => this.applySearch(this.searchQuery), 200);
-    }
   }
 
   private addHubMarkers(): void {

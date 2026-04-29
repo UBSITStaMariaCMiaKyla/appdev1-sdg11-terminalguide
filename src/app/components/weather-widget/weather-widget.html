@@ -1,29 +1,155 @@
 <div class="weather-widget">
     @if (weather$ | async; as weather) {
       <div class="weather-content">
+  
         <div class="weather-top">
-          <span class="weather-icon">{{ weather.icon }}</span>
+          <!-- Dynamic SVG icon based on condition -->
+          <div class="weather-icon-wrap">
+  
+            @if (weather.icon === 'clear') {
+              <!-- Sun -->
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="wx-icon">
+                <circle cx="20" cy="20" r="8" fill="#1D9E75" opacity="0.9"/>
+                <g stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" opacity="0.6">
+                  <line x1="20" y1="4"  x2="20" y2="8"/>
+                  <line x1="20" y1="32" x2="20" y2="36"/>
+                  <line x1="4"  y1="20" x2="8"  y2="20"/>
+                  <line x1="32" y1="20" x2="36" y2="20"/>
+                  <line x1="8.7"  y1="8.7"  x2="11.5" y2="11.5"/>
+                  <line x1="28.5" y1="28.5" x2="31.3" y2="31.3"/>
+                  <line x1="31.3" y1="8.7"  x2="28.5" y2="11.5"/>
+                  <line x1="11.5" y1="28.5" x2="8.7"  y2="31.3"/>
+                </g>
+              </svg>
+            }
+  
+            @if (weather.icon === 'partly-cloudy') {
+              <!-- Sun + cloud -->
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="wx-icon">
+                <circle cx="15" cy="14" r="7" fill="#1D9E75" opacity="0.85"/>
+                <g stroke="#1D9E75" stroke-width="1.8" stroke-linecap="round" opacity="0.5">
+                  <line x1="15" y1="3"  x2="15" y2="6"/>
+                  <line x1="5"  y1="14" x2="8"  y2="14"/>
+                  <line x1="7.5" y1="6.5" x2="9.6" y2="8.6"/>
+                  <line x1="22.4" y1="6.5" x2="20.3" y2="8.6"/>
+                </g>
+                <rect x="10" y="22" width="22" height="11" rx="5.5" fill="rgba(134,193,183,0.55)"/>
+                <path d="M17 22a6 6 0 0 1 11.5 1.5A4.5 4.5 0 0 1 32 28H12a5 5 0 0 1 5-6z" fill="rgba(174,212,234,0.7)"/>
+              </svg>
+            }
+  
+            @if (weather.icon === 'cloudy') {
+              <!-- Cloud -->
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="wx-icon">
+                <path d="M10 28a7 7 0 0 1 1.4-13.9A9 9 0 0 1 28 18.5 5.5 5.5 0 0 1 30 29H10z"
+                  fill="rgba(134,193,183,0.6)" stroke="rgba(29,158,117,0.4)" stroke-width="1.2"/>
+                <path d="M6 30a5 5 0 0 1 1-9.9A7 7 0 0 1 20 23.5 4 4 0 0 1 22 31H6z"
+                  fill="rgba(174,212,234,0.75)" stroke="rgba(29,158,117,0.3)" stroke-width="1"/>
+              </svg>
+            }
+  
+            @if (weather.icon === 'fog') {
+              <!-- Fog -->
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="wx-icon">
+                <path d="M8 14a8 8 0 0 1 15.5-2A5 5 0 0 1 30 17H8z" fill="rgba(134,193,183,0.5)"/>
+                <g stroke="rgba(29,158,117,0.5)" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="7"  y1="22" x2="33" y2="22"/>
+                  <line x1="10" y1="27" x2="30" y2="27"/>
+                  <line x1="13" y1="32" x2="27" y2="32"/>
+                </g>
+              </svg>
+            }
+  
+            @if (weather.icon === 'drizzle') {
+              <!-- Light rain -->
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="wx-icon">
+                <path d="M8 20a8 8 0 0 1 15.5-2A5 5 0 0 1 30 23H8z" fill="rgba(134,193,183,0.55)" stroke="rgba(29,158,117,0.3)" stroke-width="1"/>
+                <g stroke="#1D9E75" stroke-width="2" stroke-linecap="round" opacity="0.7">
+                  <line x1="13" y1="28" x2="11" y2="34"/>
+                  <line x1="20" y1="28" x2="18" y2="34"/>
+                  <line x1="27" y1="28" x2="25" y2="34"/>
+                </g>
+              </svg>
+            }
+  
+            @if (weather.icon === 'rain') {
+              <!-- Heavy rain -->
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="wx-icon">
+                <path d="M7 19a8 8 0 0 1 15.5-2A5 5 0 0 1 29 22H7z" fill="rgba(29,158,117,0.3)" stroke="rgba(29,158,117,0.4)" stroke-width="1.2"/>
+                <g stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round">
+                  <line x1="12" y1="27" x2="9"  y2="35"/>
+                  <line x1="19" y1="27" x2="16" y2="35"/>
+                  <line x1="26" y1="27" x2="23" y2="35"/>
+                  <line x1="15.5" y1="31" x2="12.5" y2="37" opacity="0.5"/>
+                  <line x1="22.5" y1="31" x2="19.5" y2="37" opacity="0.5"/>
+                </g>
+              </svg>
+            }
+  
+            @if (weather.icon === 'snow') {
+              <!-- Snow -->
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="wx-icon">
+                <path d="M8 19a8 8 0 0 1 15.5-2A5 5 0 0 1 30 22H8z" fill="rgba(174,212,234,0.6)" stroke="rgba(29,158,117,0.3)" stroke-width="1"/>
+                <g fill="#1D9E75" opacity="0.7">
+                  <circle cx="13" cy="30" r="2"/>
+                  <circle cx="20" cy="33" r="2"/>
+                  <circle cx="27" cy="30" r="2"/>
+                </g>
+              </svg>
+            }
+  
+            @if (weather.icon === 'thunderstorm') {
+              <!-- Thunderstorm -->
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="wx-icon">
+                <path d="M7 18a8 8 0 0 1 15.5-2A5 5 0 0 1 29 21H7z" fill="rgba(29,158,117,0.35)" stroke="rgba(29,158,117,0.4)" stroke-width="1.2"/>
+                <polyline points="22,24 17,31 21,31 16,38" stroke="#1D9E75" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <g stroke="rgba(29,158,117,0.4)" stroke-width="1.8" stroke-linecap="round">
+                  <line x1="10" y1="27" x2="8"  y2="33"/>
+                  <line x1="30" y1="27" x2="28" y2="33"/>
+                </g>
+              </svg>
+            }
+  
+          </div>
+  
           <div class="weather-main">
             <span class="weather-temp">{{ weather.temp }}°C</span>
             <span class="weather-condition">{{ weather.condition }}</span>
           </div>
         </div>
-        <div class="weather-location">📍 Baguio City, PH</div>
+  
+        <div class="weather-location">
+          <!-- Pin icon -->
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(13,46,34,0.4)" stroke-width="2.5">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          Baguio City, PH
+        </div>
+  
         <div class="weather-details">
           <div class="weather-detail">
-            <span class="detail-icon">💧</span>
+            <!-- Droplet icon -->
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(29,158,117,0.7)" stroke="none">
+              <path d="M12 2C8 8 4 13 4 17a8 8 0 0 0 16 0c0-4-4-9-8-15z"/>
+            </svg>
             <span>{{ weather.humidity }}%</span>
           </div>
           <div class="weather-divider"></div>
           <div class="weather-detail">
-            <span class="detail-icon">💨</span>
+            <!-- Wind icon -->
+            <svg width="13" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(29,158,117,0.7)" stroke-width="2.5" stroke-linecap="round">
+              <path d="M9 6a3 3 0 0 1 6 0c0 2-3 2-3 2H3"/>
+              <path d="M9 18a3 3 0 0 0 6 0c0-2-3-2-3-2H3"/>
+              <line x1="3" y1="12" x2="18" y2="12"/>
+            </svg>
             <span>{{ weather.windSpeed }} km/h</span>
           </div>
         </div>
+  
       </div>
     } @else {
       <div class="weather-loading">
-        <div class="weather-skeleton"></div>
+        <div class="weather-skeleton wide"></div>
         <div class="weather-skeleton short"></div>
       </div>
     }

@@ -126,12 +126,12 @@
       "id": "magsaysay",
       "name": "Magsaysay Ave.",
       "color": "#C37493",
-      "lat": 16.4165,
-      "lng": 120.5935,
+      "lat": 16.417180,
+      "lng": 120.595975,
       "terminals": [
-        { "no": 1, "name": "Upper Tomay", "lat": 16.4165, "lng": 120.5935 },
-        { "no": 2, "name": "Pico*Puguis Motorpool", "lat": 16.4165, "lng": 120.5935 },
-        { "no": 3, "name": "Buyagan Motorpool", "lat": 16.4165, "lng": 120.5935 }
+        { "no": 1, "name": "Upper Tomay", "lat": 16.417060, "lng": 120.595980 },
+        { "no": 2, "name": "Pico*Puguis Motorpool", "lat": 16.417150, "lng": 120.595870 },
+        { "no": 3, "name": "Buyagan Motorpool", "lat": 16.417240, "lng": 120.595780 }
       ]
     }
   ]

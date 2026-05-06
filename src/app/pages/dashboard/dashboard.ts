@@ -168,7 +168,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       center: [16.4123, 120.5960],
       zoom: 13,
       minZoom: 10,
-      maxZoom: 25,
+      maxZoom: 21,
       maxBounds: carBounds,
       maxBoundsViscosity: 1.0,
       zoomControl: true,
@@ -177,7 +177,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: 'abcd',
-      maxZoom: 25,
+      maxZoom: 21,
     }).addTo(this.map);
 
     tileLayer.once('load', () => {

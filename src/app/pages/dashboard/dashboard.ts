@@ -168,7 +168,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       center: [16.4123, 120.5960],
       zoom: 13,
       minZoom: 10,
-      maxZoom: 20,
+      maxZoom: 25,
       maxBounds: carBounds,
       maxBoundsViscosity: 1.0,
       zoomControl: true,
@@ -177,7 +177,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
       subdomains: 'abcd',
-      maxZoom: 20,
+      maxZoom: 25,
     }).addTo(this.map);
 
     tileLayer.once('load', () => {
@@ -301,7 +301,7 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     if (!this.selectedHub) return;
     const lat = terminal.lat ?? this.selectedHub.lat;
     const lng = terminal.lng ?? this.selectedHub.lng;
-    this.map.setView([lat, lng], 20);
+    this.map.setView([lat, lng], 21);
     this.selectedTerminal = terminal;
     this.selectedTerminalLat = lat;
     this.selectedTerminalLng = lng;

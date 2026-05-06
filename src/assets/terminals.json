@@ -35,16 +35,16 @@
         { "no": 3, "name": "PMAIKIAS", "lat": 16.412630, "lng": 120.594490 },
         { "no": 4, "name": "Bakakeng Sur", "lat": 16.4130, "lng": 120.594830 },
         { "no": 5, "name": "Bakakeng Norte", "lat": 16.412820, "lng": 120.594653 },
-        { "no": 6, "name": "Greenwater Village", "lat": 16.41294, "lng": 120.5948 },
-        { "no": 7, "name": "Atok Trail", "lat": 16.41294, "lng": 120.5948 },
-        { "no": 8, "name": "Gabriela Silang", "lat": 16.41294, "lng": 120.5948 },
-        { "no": 9, "name": "Purok 1 Asin Rd via Crystal Cave", "lat": 16.41294, "lng": 120.5948 },
-        { "no": 10, "name": "City Camp", "lat": 16.41294, "lng": 120.5948 },
-        { "no": 11, "name": "Kitma", "lat": 16.41294, "lng": 120.5948 },
-        { "no": 12, "name": "Irisan", "lat": 16.41294, "lng": 120.5948 },
-        { "no": 13, "name": "Dontogan", "lat": 16.41294, "lng": 120.5948 },
-        { "no": 14, "name": "Sto. Tomas Proper (Balacbac)", "lat": 16.41294, "lng": 120.5948 },
-        { "no": 15, "name": "Long-Long via Tam-awan", "lat": 16.41294, "lng": 120.5948 }
+        { "no": 6, "name": "Greenwater Village", "lat": 16.4127, "lng": 120.594525 },
+        { "no": 7, "name": "Atok Trail", "lat": 16.412690, "lng": 120.594410 },
+        { "no": 8, "name": "Gabriela Silang", "lat": 16.412750, "lng": 120.594350 },
+        { "no": 9, "name": "Purok 1 Asin Rd via Crystal Cave", "lat": 16.41292, "lng": 120.594170 },
+        { "no": 10, "name": "City Camp", "lat": 16.413130, "lng": 120.5940 },
+        { "no": 11, "name": "Kitma", "lat": 16.4131, "lng": 120.593850 },
+        { "no": 12, "name": "Irisan", "lat": 16.4128, "lng": 120.593490 },
+        { "no": 13, "name": "Dontogan", "lat": 16.413250, "lng": 120.593490 },
+        { "no": 14, "name": "Sto. Tomas Proper (Balacbac)", "lat": 16.4134, "lng": 120.593490 },
+        { "no": 15, "name": "Long-Long via Tam-awan", "lat": 16.4136, "lng": 120.593490 }
       ]
     },
     {

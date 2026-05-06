@@ -6,6 +6,8 @@ import { SdgInfo } from './pages/sdg-info/sdg-info';
 import { Feedback } from './pages/feedback/feedback';
 import { NotFound } from './pages/not-found/not-found';
 import { Login } from './pages/login/login';
+import { authGuard } from './guards/auth.guard';
+import { unsavedChangesGuard } from './guards/unsaved-changes.guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -13,7 +15,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: Dashboard },
   { path: 'terminal/:id', component: TerminalDetail },
   { path: 'sdg-info', component: SdgInfo },
-  { path: 'feedback', component: Feedback },
+  { path: 'feedback', component: Feedback, canDeactivate: [unsavedChangesGuard] },
   { path: 'not-found', component: NotFound },
   { path: '**', redirectTo: 'not-found' },
 ];

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, AsyncPipe } from '@angular/common';
 import { WeatherService } from '../../services/weather';
 import { Observable } from 'rxjs';
@@ -14,13 +14,8 @@ import { WeatherDisplay } from '../../models/weather.model';
 export class WeatherWidget implements OnInit {
   private weatherService = inject(WeatherService);
   weather$!: Observable<WeatherDisplay>;
-  isExpanded = signal(false);
 
   ngOnInit(): void {
     this.weather$ = this.weatherService.getWeather();
-  }
-
-  toggle(): void {
-    this.isExpanded.set(!this.isExpanded());
   }
 }

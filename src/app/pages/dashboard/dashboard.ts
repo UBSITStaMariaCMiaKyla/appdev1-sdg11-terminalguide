@@ -174,8 +174,8 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     );
 
     this.map = L.map('leaflet-map', {
-      center: [16.4123, 120.5960],
-      zoom: 13,
+      center: [16.4146, 120.5960],
+      zoom: 17,
       minZoom: 10,
       maxZoom: 21,
       maxBounds: carBounds,

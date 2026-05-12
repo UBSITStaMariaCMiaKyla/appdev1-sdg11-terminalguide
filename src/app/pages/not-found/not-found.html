@@ -1,1 +1,49 @@
-<p>not-found works!</p>
+<div class="nf-page">
+  <div class="nf-bg-text">404</div>
+
+  <div class="nf-content">
+
+    <div class="nf-road">
+      <img class="nf-jeepney" src="/assets/jeepney_icon.png" alt="jeepney" />
+      <div class="nf-road-line"></div>
+    </div>
+
+    <div class="nf-tag">Error 404 · Page Not Found</div>
+
+    <h1 class="nf-title">
+      Jeepney<br><span class="nf-accent">Not Found</span>
+    </h1>
+
+    <p class="nf-subtitle">
+      Looks like this route doesn't exist — even the jeepney skipped it.
+      Let's get you back on the right road.
+    </p>
+
+    <div class="nf-actions">
+      <a routerLink="/" class="nf-btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        Go Home
+      </a>
+      <a routerLink="/dashboard" class="nf-btn-secondary">
+        View Terminals
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="nf-hubs">
+      <span class="nf-hubs-label">Try a quick search:</span>
+      <div class="nf-tags">
+        <a routerLink="/dashboard" [queryParams]="{search: 'Session-Harrison'}" class="nf-hub-tag">Session–Harrison</a>
+        <a routerLink="/dashboard" [queryParams]="{search: 'Igorot Park'}" class="nf-hub-tag">Igorot Park</a>
+        <a routerLink="/dashboard" [queryParams]="{search: 'Rizal Park'}" class="nf-hub-tag">Rizal Park</a>
+        <a routerLink="/dashboard" [queryParams]="{search: 'Baguio Public Market'}" class="nf-hub-tag">Public Market</a>
+        <a routerLink="/dashboard" [queryParams]="{search: 'Malcolm Square'}" class="nf-hub-tag">Malcolm Square</a>
+      </div>
+    </div>
+
+  </div>
+</div>

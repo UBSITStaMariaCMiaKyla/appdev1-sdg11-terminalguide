@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map, startWith, tap } from 'rxjs';
 import { TerminalService } from '../../services/terminal';
 import { TerminalHub, Terminal } from '../../models/terminal.model';
 import { LoadingSpinner } from '../../components/loading-spinner/loading-spinner';
 import { WeatherWidget } from '../../components/weather-widget/weather-widget';
+import { Auth } from '../../services/auth';
 
 declare const L: any;
 
@@ -17,7 +18,9 @@ declare const L: any;
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
-  // Observable exposed for async pipe
+  private auth = inject(Auth);
+  private router = inject(Router);
+
   hubs$!: Observable<TerminalHub[]>;
   filteredHubs$!: Observable<TerminalHub[]>;
   isLoading = true;
@@ -49,7 +52,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // HTTP GET via service — satisfies requirement #2
     this.hubs$ = this.terminalService.getHubs().pipe(
       tap(hubs => {
         this.allHubs = hubs;
@@ -63,7 +65,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
       })
     );
 
-    // filteredHubs$ reacts to search query params
     this.filteredHubs$ = combineLatest([
       this.hubs$,
       this.route.queryParams.pipe(startWith({ search: '' }))
@@ -87,7 +88,6 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
     this.initMap();
     this.mapReady = true;
 
-    // If hubs already loaded, render markers now
     if (this.allHubs.length) {
       this.renderHubMarkers(this.allHubs);
       if (this.searchQuery) {
@@ -143,6 +143,15 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
             const lat = matchedTerminal.lat ?? hub.lat;
             const lng = matchedTerminal.lng ?? hub.lng;
             this.map.setView([lat, lng], 19);
+
+            // Auth check on search-resolved terminal too
+            if (!this.auth.isLoggedIn()) {
+              this.router.navigate(['/login'], {
+                queryParams: { returnUrl: '/dashboard', search: query }
+              });
+              return;
+            }
+
             this.selectedTerminal = matchedTerminal;
             this.selectedTerminalLat = lat;
             this.selectedTerminalLng = lng;
@@ -268,6 +277,13 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
           direction: 'top',
         })
         .on('click', () => {
+          // Auth check on map marker click
+          if (!this.auth.isLoggedIn()) {
+            this.router.navigate(['/login'], {
+              queryParams: { returnUrl: '/dashboard' }
+            });
+            return;
+          }
           this.map.setView([lat, lng], 18);
           this.selectedTerminal = terminal;
           this.selectedTerminalLat = lat;
@@ -299,6 +315,15 @@ export class Dashboard implements OnInit, AfterViewInit, OnDestroy {
 
   selectTerminal(terminal: Terminal): void {
     if (!this.selectedHub) return;
+
+    // Auth check — redirect to login if not signed in
+    if (!this.auth.isLoggedIn()) {
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: '/dashboard' }
+      });
+      return;
+    }
+
     const lat = terminal.lat ?? this.selectedHub.lat;
     const lng = terminal.lng ?? this.selectedHub.lng;
     this.map.setView([lat, lng], 21);

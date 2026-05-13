@@ -12,7 +12,7 @@ import { unsavedChangesGuard } from './guards/unsaved-changes.guard';
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'login', component: Login },
-  { path: 'dashboard', component: Dashboard },
+  { path: 'dashboard', component: Dashboard, canActivate: [authGuard] },
   { path: 'terminal/:id', component: TerminalDetail },
   { path: 'sdg-info', component: SdgInfo },
   { path: 'feedback', component: Feedback, canDeactivate: [unsavedChangesGuard] },
